@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="web/src"/>
+	<classpathentry kind="src" path="test"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib-common/junit-3.8.1.jar"/>
+	<classpathentry kind="lib" path="lib-common/spring-2.5.1.jar"/>
+	<classpathentry kind="lib" path="lib-common/spring-webmvc.jar"/>
+	<classpathentry kind="lib" path="lib-common/servlet-api.jar"/>
+	<classpathentry kind="lib" path="lib-common/hibernate3.jar"/>
+	<classpathentry kind="lib" path="lib-common/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib-common/jstl.jar"/>
+	<classpathentry kind="lib" path="lib-common/standard.jar"/>
+	<classpathentry kind="lib" path="lib-common/antlr-2.7.6.jar"/>
+	<classpathentry kind="lib" path="lib-common/commons-collections-3.1.jar"/>
+	<classpathentry kind="lib" path="lib-common/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib-common/javassist-3.9.0.GA.jar"/>
+	<classpathentry kind="lib" path="lib-common/jta-1.1.jar"/>
+	<classpathentry kind="lib" path="lib-common/mysql-connector-java-5.1.7-bin.jar"/>
+	<classpathentry kind="lib" path="lib-common/slf4j-api-1.5.8.jar"/>
+	<classpathentry kind="lib" path="lib-common/jsp-api.jar"/>
+	<classpathentry kind="lib" path="lib-common/tests-openmrs-api-1.6.2.12911-dev.jar"/>
+	<classpathentry kind="lib" path="lib-common/web-openmrs-api-1.6.2.12911-dev.jar"/>
+	<classpathentry kind="lib" path="lib-common/commons-logging-1.0.4.jar"/>
+	<classpathentry kind="lib" path="lib-common/jcommon-1.0.16.jar"/>
+	<classpathentry kind="lib" path="lib-common/jfreechart-1.0.13.jar"/>
+	<classpathentry kind="lib" path="lib-common/slf4j-simple-1.5.8.jar"/>
+	<classpathentry kind="lib" path="lib/iText-5.0.2.jar"/>
+	<classpathentry kind="lib" path="lib-common/openmrs-api-1.6.2.12911-dev.jar"/>
+	<classpathentry kind="lib" path="C:/Users/EMR/Documents/MOH Modules/moh-appointment/dist/mohappointment-0.0.7.jar"/>
+	<classpathentry kind="output" path="build"/>
+</classpath>

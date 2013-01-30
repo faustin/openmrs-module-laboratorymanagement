@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+	<!-- Beans to add to the current Application context definition -->
+	<!-- Set up URL mappings for new URLs -->
+
+<beans>
+	<bean parent="serviceContext">
+		<property name="moduleService">
+			<list>
+				<value>org.openmrs.module.laboratorymodule.service.LaboratoryService</value>
+				<bean
+					class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+					<property name="transactionManager">
+						<ref bean="transactionManager" />
+					</property>
+					<property name="target">
+						<bean
+							class="org.openmrs.module.laboratorymodule.impl.LaboratoryServiceImpl">
+							<property name="laboratoryDAO">
+								<bean
+									class="org.openmrs.module.laboratorymodule.db.hibernate.LaboratoryDAOimpl">
+									<property name="sessionFactory">
+										<ref bean="sessionFactory" />
+									</property>
+								</bean>
+							</property>
+						</bean>
+					</property>
+					<property name="preInterceptors">
+						<list>
+							<ref bean="authorizationInterceptor" />
+						</list>
+					</property>
+					<property name="transactionAttributeSource">
+						<bean
+							class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<bean id="laboratorymoduleUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">	
+	    <property name="order">
+	    	<value>2</value>
+	    </property>
+		<property name="mappings">
+			<props>
+			
+
+				<prop key="module/@MODULE_ID@/viewLabOrder.form">viewLabOrderController</prop>
+				<prop key="module/@MODULE_ID@/labCode.form">addLabCodeController</prop>							
+				<prop key="module/@MODULE_ID@/viewLabOrdersByPatient.form">viewLabOrdersByPatient</prop>									
+				<prop key="module/@MODULE_ID@/addResult.form">addResultController</prop>						
+				<prop key="module/@MODULE_ID@/testStatistics.form">viewStatisticsController</prop>
+				<prop key="module/@MODULE_ID@/testByConcept.form">viewAlltestByConceptController</prop>
+				<prop key="module/@MODULE_ID@/exportToPDF.form">exportToPDF</prop>
+			    <prop key="module/@MODULE_ID@/chart.htm">labChartController</prop>
+			    <prop key="module/@MODULE_ID@/patientReport.form">patientReportController</prop>
+			     <prop key="module/@MODULE_ID@/monthlyReport.form">viewMonthlyReportController</prop>
+			    <prop key="module/@MODULE_ID@/labConfiguration.form">labConfigurationController</prop>
+			    <prop key="module/@MODULE_ID@/displayLabExams.form">displayLabExamsController</prop>
+			    <prop key="**/labOrderPortlet.portlet">labOrderPortletController</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- Controllers -->
+	<bean id="labOrderPortletController"
+		class="@MODULE_PACKAGE@.web.controller.LabOrderPortletController" />
+	
+	<bean id="labTestChartView" class="@MODULE_PACKAGE@.web.chart.EvolutionOfClientRegisteredPerDay"/>
+
+	<bean id="labChartController" class="@MODULE_PACKAGE@.web.controller.ChartStatsQueryController">
+		<property name="chartViews">
+			<map>
+				<entry key="xyChartTest"><ref bean="labTestChartView" /></entry>
+			</map>
+		</property>
+	</bean>
+	 
+	<bean id="labConfigurationController"
+		class="org.openmrs.module.laboratorymodule.web.controller.LabConfigurationController">
+		<property name="viewName">
+			<value>/module/@MODULE_ID@/labConfiguration</value>
+		</property>
+	</bean>
+	
+
+	<bean id="exportToPDF"
+		class="org.openmrs.module.laboratorymodule.web.controller.ExportToPDFController"></bean>
+		
+	<bean id="addResultController"
+		class="org.openmrs.module.laboratorymodule.web.controller.AddResultController">
+		<property name="viewName">
+			<value>/module/@MODULE_ID@/addResult</value>
+		</property>
+	</bean>	
+	<bean id="viewStatisticsController"
+		class="org.openmrs.module.laboratorymodule.web.controller.ViewStatisticsController">
+		<property name="viewName">
+			<value>/module/@MODULE_ID@/testStatistics</value>
+		</property>
+	</bean>
+	<bean id="viewAlltestByConceptController"
+		class="org.openmrs.module.laboratorymodule.web.controller.ViewAlltestByConceptController">
+		<property name="viewName">
+			<value>/module/@MODULE_ID@/viewLabtestByConcept</value>
+		</property>
+	</bean>
+	<bean id="patientReportController"
+		class="org.openmrs.module.laboratorymodule.web.controller.PatientReportController">
+		<property name="viewName">
+			<value>/module/@MODULE_ID@/patientReport</value>
+		</property>
+	</bean>
+	<bean id="viewMonthlyReportController"
+		class="org.openmrs.module.laboratorymodule.web.controller.ViewMonthlyReportController">
+		<property name="viewName">
+			<value>/module/@MODULE_ID@/reportedMontly</value>
+		</property>
+	</bean>
+	<bean id="viewLabOrderController"
+		class="org.openmrs.module.laboratorymodule.web.controller.ViewLabOrderController">
+		<property name="viewName">
+			<value>/module/@MODULE_ID@/viewLabOrder</value>
+		</property>
+	</bean>	
+	<bean id="addLabCodeController"
+		class="org.openmrs.module.laboratorymodule.web.controller.AddLabCodeController">
+		<property name="viewName">
+			<value>/module/@MODULE_ID@/labCodeForm</value>
+		</property>
+	</bean>
+	<bean id="viewLabOrdersByPatient"
+		class="org.openmrs.module.laboratorymodule.web.controller.ViewLabOrdersByPatient">
+		<property name="viewName">
+			<value>/module/@MODULE_ID@/LabOrderByPatient</value>
+		</property>
+	</bean>
+	<bean id="displayLabExamsController"
+		class="org.openmrs.module.laboratorymodule.web.controller.DisplayLabExamsController">
+		<property name="viewName">
+			<value>/module/@MODULE_ID@/displaylabExams</value>
+		</property>
+	</bean>
+	
+
+	<!-- /Controllers -->
+
+</beans>
