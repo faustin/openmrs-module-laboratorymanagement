@@ -468,8 +468,7 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 	 * @see org.openmrs.module.laboratorymodule.db.LaboratoryDAO#getLabExamsByExamType(int,
 	 *      java.util.Collection, java.util.Date, java.util.Date)
 	 */
-	public List<Obs> getLabExamsByExamType(int patientId,
-			Collection<Integer> cptIds, Date startDate, Date endDate) {
+	public List<Obs> getLabExamsByExamType(int patientId,	Collection<Integer> cptIds, Date startDate, Date endDate) {
 		// TODO Auto-generated method stu
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		List<Obs> labExamsByCategory = new ArrayList<Obs>();
@@ -485,7 +484,6 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 			}
 			if (i == cptIds.size()) {
 				strbuf.append(" " + onecptId);
-
 			}
 			i = i + 1;
 
@@ -495,16 +493,15 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 				+ df.format(startDate) + "' and '" + df.format(endDate) + "'");
 		query = sessionFactory.getCurrentSession().createSQLQuery(
 				strbuf.toString());
-		System.out.println("ZZis this the query running ZZlab query "
-				+ query.toString());
+		
 		List<Integer> obsIdFromQuery = query.list();
 
 		for (Integer integer : obsIdFromQuery) {
 			labExamsByCategory.add(labObbService.getObs(integer));
 		}
-
-		System.out.println("WWWWWWWlabexam by category" + labExamsByCategory);
+   log.info(">>>>>>>>>Lab exams lists"+labExamsByCategory);
 		return labExamsByCategory;
+		
 	}
 
 	public List<Obs> getLabExamsByExamTypeBetweenTwoDates(Date startDate,

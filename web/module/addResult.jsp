@@ -10,21 +10,20 @@
 <openmrs:htmlInclude file="/moduleResources/laboratorymodule/chosen.css" />
 <openmrs:htmlInclude
 	file="/moduleResources/laboratorymodule/jsControl.js" />
-<openmrs:htmlInclude	file="/moduleResources/laboratorymodule/jsCreateFields.js" />
+<openmrs:htmlInclude
+	file="/moduleResources/laboratorymodule/jsCreateFields.js" />
 
 <script>
-var $t = jQuery.noConflict();
-		$t(document).ready(function() {
-			$t(".cmt").hide(); //hide the field on the loading
-			$t(".bouton").click(
-					function() {						
-						var buttonId = this.id;
-						var conceptId = buttonId.split("_")[1];						
-						$t("#cmt_"+conceptId).show();	//show the field when the user clicks on button.
-								
-					});				
+	var $t = jQuery.noConflict();
+	$t(document).ready( function() {
+		$t(".cmt").hide(); //hide the field on the loading
+			$t(".bouton").click( function() {
+				var buttonId = this.id;
+				var conceptId = buttonId.split("_")[1];
+				$t("#cmt_" + conceptId).show(); //show the field when the user clicks on button.
+
+				});
 		});
-		
 </script>
 
 
@@ -48,24 +47,20 @@ var $t = jQuery.noConflict();
 <br>
 
 <c:if test="${fn:length(mapLabeTest)!=0}">
-	<form action="addResult.form?patientId=${param.patientId}&locationId=${param.locationId}&save=true" method="post">
-	
-<input type="hidden" name="patient_id" value="${patientId}"/>
-
-		<c:forEach var="mapLab" items="${mapLabeTest}"
-		varStatus="num">
-		
-		<fieldset><legend><b>${mapLab.key.name}</b></legend> <c:forEach
+	<form
+		action="addResult.form?patientId=${param.patientId}&locationId=${param.locationId}&save=true"
+		method="post"><input type="hidden" name="patient_id"
+		value="${patientId}" /> <c:forEach var="mapLab"
+		items="${mapLabeTest}" varStatus="num">
+		<fieldset><legend><b>${mapLab.key.name}</b></legend> 
+		<c:forEach
 			var="labOrder" items="${mapLab.value}" varStatus="num">
 			<c:set var="order" value="${labOrder[0]}" />
 			<c:set var="concept" value="${order.concept}" />
 			<c:set var="units" value="${labOrder[1]}" />
 			<c:set var="obsResult" value="${resultsMap[order]}" />
-			<c:set var="fieldName"		value="labTest-${order.concept.conceptId}-${order.orderId}" />
-			<c:set var="resultComment"	value="comment-${order.concept.conceptId}-${order.orderId}" />
-			
-			
-
+			<c:set var="fieldName" 	value="labTest-${order.concept.conceptId}-${order.orderId}" />
+			<c:set var="resultComment" 	value="comment-${order.concept.conceptId}-${order.orderId}" />
 			<c:choose>
 				<c:when test="${concept.numeric}">
 					<!-- Lab test is numeric -->
@@ -76,7 +71,11 @@ var $t = jQuery.noConflict();
 							<td><input type="text" name="${fieldName}"
 								value="${obsResult != null ? obsResult.valueNumeric : ''}" /> <c:out
 								value="${units}" /></td>
-								<td><input name="${resultComment}" type="text" value=""  class="cmt" id="cmt_${concept.conceptId}"><span id="addComments_${concept.conceptId}" class="bouton }"><img src="${pageContext.request.contextPath}/images/add.gif" style="cursor: pointer;" /></span></td>
+							<td><input name="${resultComment}" type="text" value=""
+								class="cmt" id="cmt_${concept.conceptId}"><span
+								id="addComments_${concept.conceptId}" class="bouton }"><img
+								src="${pageContext.request.contextPath}/images/add.gif"
+								style="cursor: pointer;" /></span></td>
 						</tr>
 					</table>
 				</c:when>
@@ -87,15 +86,17 @@ var $t = jQuery.noConflict();
 
 						<tr>
 							<c:if test="${concept.name.name eq 'WIDAL TEST'}">
-								<td colspan="3" style="width: 250px; font-weight: italic"><c:out value="${concept.name}" /></td>
+								<td colspan="3" style="width: 250px; font-weight: italic"><c:out
+									value="${concept.name}" /></td>
 								<td><textarea name="${fieldName}" rows="1" cols="30">${obsResult != null ? obsResult.valueText : ''}</textarea></td>
 							</c:if>
 							<c:if test="${concept.name.name != 'WIDAL TEST'}">
-									<td colspan="3" style="width: 250px; font-weight: italic"><c:out value="${concept.name}" /></td>
+								<td colspan="3" style="width: 250px; font-weight: italic"><c:out
+									value="${concept.name}" /></td>
 								<td><input type="text" name="${fieldName}"
 									value="${obsResult != null ? obsResult.valueText : ''}" /></td>
 							</c:if>
-							
+
 
 						</tr>
 					</table>
@@ -108,7 +109,7 @@ var $t = jQuery.noConflict();
 							<td colspan="3" style="width: 250px; font-weight: italic"><c:out
 								value="${concept.name}" /></td>
 							<td><c:choose>
-							<c:when test="${multipleAnswerConcepts[concept]}">
+								<c:when test="${multipleAnswerConcepts[concept]}">
 									<c:forEach items="${concept.answers}" var="answer">
 										<input type="checkbox" name="${fieldName}"
 											checked="${obsResult.valueCoded != null ? 'checked' : ''}"
@@ -116,141 +117,178 @@ var $t = jQuery.noConflict();
 										${answer.answerConcept.name}
 										&nbsp;&nbsp;&nbsp;
 									</c:forEach>
-							</c:when>
-								<c:otherwise>
-							<select name="${fieldName}">
+							 </c:when>
+							<c:otherwise>
+							  <select name="${fieldName}">
 		                             <option value="-2"></option>
-										<c:forEach items="${concept.answers}" var="answer">
+									<c:forEach items="${concept.answers}" var="answer">
 											<option value="${answer.answerConcept.conceptId}"
 												<c:if test="${obsResult != null && obsResult.valueCoded.conceptId == answer.answerConcept.conceptId}">
 													selected="selected"
 												</c:if>>${answer.answerConcept.name}
-											</option>
+									  </option>
 									</c:forEach>
-							</select>
-
+								</select>
 									</c:otherwise>
 							</c:choose></td>
-							<td><input name="${resultComment}" type="text" value=""  class="cmt" id="cmt_${concept.conceptId}"><span id="addComments_${concept.conceptId}" class="bouton }"><img src="${pageContext.request.contextPath}/images/add.gif" style="cursor: pointer;" /></span></td>
-							
+							<td><input name="${resultComment}" type="text" value=""
+								class="cmt" id="cmt_${concept.conceptId}"><span
+								id="addComments_${concept.conceptId}" class="bouton }"><img
+								src="${pageContext.request.contextPath}/images/add.gif"
+								style="cursor: pointer;" /></span></td>
+
 						</tr>
 					</table>
 				</c:when>
 				<!-- if datatype is N/A, i.e. this concept is only an answer, not a question -->
-         
+
 				<c:when test="${concept.datatype.answerOnly}">
 					<!-- Lab test is a construct:display the lab tests linked to the Order considered as a gp of Lab tests -->
-					<c:forEach var="oneGroupedtest" items="${groupedTests}" 	varStatus="num">
-					<c:set var="conceptName" value="${concept.name}" />
-					<c:set var="concptNameFromMap" value="${oneGroupedtest.key.name}" />
-					
-					<c:if test="${conceptName eq concptNameFromMap}">
-				
-					
-					<fieldset><legend>${concept.name}</legend> <c:forEach
-						items="${oneGroupedtest.value}" var="groupedTest">
-					
-						<c:set var="childConcept" value="${groupedTest[0]}" />
-						<c:set var="unit" value="${groupedTest[1]}" />
-						<c:set var="childResult" value="${obsResult[childConcept]}" />
+					<c:forEach var="oneGroupedtest" items="${groupedTests}"
+						varStatus="num">
+						<c:set var="conceptName" value="${concept.name}" />
+						<c:set var="concptNameFromMap" value="${oneGroupedtest.key.name}" />
 
-						<!-- Append parent construct concept to fieldname -->
-						<c:set var="fieldName"
-							value="labTest-${childConcept.conceptId}-${order.orderId}-${concept.conceptId}" />
-						
+						<c:if test="${conceptName eq concptNameFromMap}">
 
 
-						<c:choose>
-							<c:when test="${childConcept.datatype.numeric}">
-								<!-- Lab test is numeric -->
-								<table>
-									<tr>
-										<td colspan="3" style="width: 250px; font-weight: italic"><c:out
-											value="${childConcept.name}" /></td>
-										<td><input type="text" name="${fieldName}"
-											value="${childResult != null ? childResult.valueNumeric : ''}" /><c:out		value="${unit}" /></td>
-										<td><input name="${resultComment}" type="text" value=""  class="cmt" id="cmt_${concept.conceptId}"><span id="addComments_${concept.conceptId}" class="bouton }"><img src="${pageContext.request.contextPath}/images/add.gif" style="cursor: pointer;" /></span></td>
-											
-									</tr>
-								</table>
-							</c:when>
- 
-							<c:when test="${childConcept.datatype.text}">
-								<!-- Lab test is text -->
-								<table>
-									<tr>
-										<!-- if other results are found,write them in textarea -->
-										<c:if
-											test="${childConcept.name.name eq 'OTHER LAB TEST RESULT' || 'OTHER RESULT'}">
+							<fieldset><legend>${concept.name}</legend> <c:forEach
+								items="${oneGroupedtest.value}" var="groupedTest">
 
-											<td colspan="3" style="width: 250px; font-weight: italic"><c:out
-												value="${childConcept.name}" /></td>
+								<c:set var="childConcept" value="${groupedTest[0]}" />
+								<c:set var="unit" value="${groupedTest[1]}" />
+								<c:set var="childResult" value="${obsResult[childConcept]}" />
 
-											<td><textarea name="${fieldName}" rows="1" cols="30">${childResult != null ? childResult.valueText : ''}</textarea></td>
+								<!-- Append parent construct concept to fieldname -->
+								<c:set var="fieldName"
+									value="labTest-${childConcept.conceptId}-${order.orderId}-${concept.conceptId}" />
 
+								<!-- if one of the child is set of other lab tests ,then go through them -->
+								<c:if test="${childConcept.set}">
+									<c:set var="gdChildrenConcepts"
+										value="${childConcept.conceptSets}" />
+									<c:forEach var="gdChildConcept" items="${gdChildrenConcepts}"
+										varStatus="num">
+                               <c:set var="fieldName1"  value="labTest-${gdChildConcept.concept.conceptId}-${order.orderId}-${concept.conceptId}" />
+                               
+										<!-- to do :Go through spermogram set and display children+ their children -->
+
+										<c:if test="${gdChildConcept.concept.datatype.text}">
+											<table>
+												<tr>
+													<td colspan="3" style="width: 250px; font-weight: italic"><c:out
+														value="${gdChildConcept.concept.name}" /></td>
+													<td><input type="text" name="${fieldName1}"
+														value="${childResult != null ? childResult.valueText : ''}" /></td>
+													<td><input name="${resultComment}" type="text"
+														value="" class="cmt"
+														id="cmt_${gdChildConcept.concept.conceptId}"><span
+														id="addComments_${gdChildConcept.concept.conceptId}"
+														class="bouton }"><img
+														src="${pageContext.request.contextPath}/images/add.gif"
+														style="cursor: pointer;" /></span></td>
+												</tr>
+											</table>
 										</c:if>
-										<c:if
-											test="${childConcept.name.name != 'OTHER LAB TEST RESULT'}">
-											<td colspan="3" style="width: 250px; font-weight: italic"><c:out
-												value="${childConcept.name}" /></td>
-											<td><input type="text" name="${fieldName}"
-												value="${childResult != null ? childResult.valueText : ''}" /></td>
-											<td><input name="${resultComment}" type="text" value=""  class="cmt" id="cmt_${concept.conceptId}"><span id="addComments_${concept.conceptId}" class="bouton }"><img src="${pageContext.request.contextPath}/images/add.gif" style="cursor: pointer;" /></span></td>
-										</c:if>
+									</c:forEach>
+								</c:if>
+								<c:choose>
+									<c:when test="${childConcept.datatype.numeric}">
+										<!-- Lab test is numeric -->
+										<table>
+											<tr>
+												<td colspan="3" style="width: 250px; font-weight: italic"><c:out
+													value="${childConcept.name}" /></td>
+												<td><input type="text" name="${fieldName}"
+													value="${childResult != null ? childResult.valueNumeric : ''}" /><c:out
+													value="${unit}" /></td>
+												<td><input name="${resultComment}" type="text" value=""
+													class="cmt" id="cmt_${concept.conceptId}"><span
+													id="addComments_${concept.conceptId}" class="bouton }"><img
+													src="${pageContext.request.contextPath}/images/add.gif"
+													style="cursor: pointer;" /></span></td>
+
+											</tr>
+										</table>
+									</c:when>
+
+									<c:when test="${childConcept.datatype.text}">
+										<!-- Lab test is text -->
+										<table>
+											<tr>
+												<!-- if other results are found,write them in textarea -->
+												<c:if
+													test="${childConcept.name.name eq 'OTHER LAB TEST RESULT' || 'OTHER RESULT'||'OTHER PARASITE IN STOOL'}">
+
+													<td colspan="3" style="width: 250px; font-weight: italic"><c:out
+														value="${childConcept.name}" /></td>
+
+													<td><textarea name="${fieldName}" rows="1" cols="30">${childResult != null ? childResult.valueText : ''}</textarea></td>
+
+												</c:if>
+												<c:if
+													test="${childConcept.name.name != 'OTHER LAB TEST RESULT'}">
+													<td colspan="3" style="width: 250px; font-weight: italic"><c:out
+														value="${childConcept.name}" /></td>
+													<td><input type="text" name="${fieldName}"
+														value="${childResult != null ? childResult.valueText : ''}" /></td>
+													<td><input name="${resultComment}" type="text"
+														value="" class="cmt" id="cmt_${concept.conceptId}"><span
+														id="addComments_${concept.conceptId}" class="bouton }"><img
+														src="${pageContext.request.contextPath}/images/add.gif"
+														style="cursor: pointer;" /></span></td>
+												</c:if>
 
 
-									</tr>
-								</table>
-							</c:when>
-							<!--start  Lab test is coded -->
-							<c:when test="${childConcept.datatype.coded}">
-								
-								<table>
-									<tr>
-										<td colspan="3" style="width: 250px; font-weight: italic"><c:out
-											value="${childConcept.name}" /></td>
-										<td>
-										<c:choose>
-											<c:when test="${multipleAnswerConcepts[childConcept]}">
-												<c:forEach items="${childConcept.answers}" var="answer">
-													<input type="checkbox" name="${fieldName}"
-														checked="${childResult.valueCoded != null ? 'checked' : ''}"
-														value="${answer.answerConcept.conceptId}" />
+											</tr>
+										</table>
+									</c:when>
+									<!--start  Lab test is coded -->
+
+									<c:when test="${childConcept.datatype.coded}">
+
+										<table>
+											<tr>
+												<td colspan="3" style="width: 250px; font-weight: italic"><c:out
+													value="${childConcept.name}" /></td>
+												<td><c:choose>
+
+													<c:when test="${multipleAnswerConcepts[childConcept]}">
+														<c:forEach items="${childConcept.answers}" var="answer">
+															<input type="checkbox" name="${fieldName}"	value="${answer.answerConcept.conceptId}" />
 														${answer.answerConcept.name}
 														&nbsp;&nbsp;&nbsp;
-													</c:forEach>
-										</c:when>
-										<c:otherwise>
-										     	<select name="${fieldName}">
-														<c:forEach items="${childConcept.answers}" var="answer">
+													 </c:forEach>
+												  </c:when>
+												 <c:otherwise>
+													<select name="${fieldName}">
+															<c:forEach items="${childConcept.answers}" var="answer">
 															<option value="${answer.answerConcept.conceptId}"
-																<c:if test="${childResult != null && childResult.valueCoded.conceptId == answer.answerConcept.conceptId}">
+																	<c:if test="${childResult != null && childResult.valueCoded.conceptId == answer.answerConcept.conceptId}">
 																	selected="selected"
 																</c:if>>${answer.answerConcept.name}
-															</option>
-														</c:forEach>
-												</select>
-											</c:otherwise>
-										</c:choose></td>
-									</tr>
-								</table>
-							</c:when>
-							<!--end   Lab test is coded -->
-						</c:choose>
+														   </option>
+													    </c:forEach>
+														</select>
+													</c:otherwise>
+												</c:choose></td>
+											</tr>
+										</table>
+									</c:when>
+									<!--end   Lab test is coded -->
+								</c:choose>
 
-					</c:forEach></fieldset>
-					</c:if>
-					
+							</c:forEach></fieldset>
+						</c:if>
+
 					</c:forEach>
 				</c:when>
 
 			</c:choose>
 
 		</c:forEach></fieldset>
-	</c:forEach>
-	 <input type="submit" value="update" /> <input type="reset"
+	</c:forEach> <input type="submit" value="update" /> <input type="reset"
 		value="cancel" /></form>
 </c:if>
-
 <%@ include file="/WEB-INF/template/footer.jsp"%>
 

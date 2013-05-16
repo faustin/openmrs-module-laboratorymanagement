@@ -30,7 +30,7 @@ public class AddResultController extends ParameterizableViewController {
 
 	protected final Log log = LogFactory.getLog(getClass());
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "deprecation" })
 	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Map<String, Object> model = new HashMap<String, Object>();
 		Map<Concept, List<Object[]>>mapLabtests=new HashMap<Concept, List<Object[]>>();
@@ -69,10 +69,8 @@ public class AddResultController extends ParameterizableViewController {
 					Concept cpt = conceptSet.getConcept();
 					cptList.add(cpt);	
 					
-				}		
-				
-				//run through all orders and group all Lab tests  that are from one group
-				
+				}				
+				//run through all orders and group all Lab tests  that are from one group				
 			      	incompleteLabExams = new ArrayList<Object[]>();
 				for (Order labOrder : incompleteLabOrders){
 					// Look up labObs(as result) for this order	
@@ -91,13 +89,15 @@ public class AddResultController extends ParameterizableViewController {
 							orderHistryList =LabUtils.getIncompleteLabOrderForOrderWithMultipleTests(labOrder);
 							
 							groupedMultipletest.put(labOrder.getConcept(), orderHistryList);
+							log.info(">>>>>>>>>>>>>>>lab order >>>>>>>>>>>>"+labOrder.getConcept().getConceptId());
 							
 						}
 						else 
 						{				
 							//for each order we have an obs??
 							for (Obs labObs : obsList) {					
-								resultMap.put(labOrder, labObs);										
+								resultMap.put(labOrder, labObs);
+								log.info(">>>>>>>>>>>>>>>lab order >>>>>>>>>>>>"+labOrder.getConcept().getConceptId());
 							}
 						}					
 						orderHistory = LabUtils.getIncompleteLabExam(labOrder);											
@@ -119,9 +119,7 @@ public class AddResultController extends ParameterizableViewController {
 			    //model.put("incompleteLabOrders", incompleteLabExams);
 				model.put("labCode", labCode);
 				model.put("mapLabeTest", mapLabtests);
-
-				model.put("groupedTests", groupedMultipletest);
-				
+				model.put("groupedTests", groupedMultipletest);				
 				log.info("order<<<>mapped >>>>>> history List size  >>>>>>>>>>>>>"+groupedMultipletest.size());
 				
 				model.put("patient", patient);

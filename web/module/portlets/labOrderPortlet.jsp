@@ -210,6 +210,7 @@ Request Form</legend>
 			<c:set var="immunoSerology" value="${model.immunoSerology}" />
 			<c:set var="bloodChemistry" value="${model.bloodChemistry}" />
 			<c:set var="toxicology" value="${model.toxicology}" />
+			<c:set var="spermogram" value="${model.spermogram}" />
 
 
 
@@ -360,7 +361,7 @@ Request Form</legend>
 						<c:set var="fieldNameP"
 							value="lab-${gdParentConcept}-${labOrder.parentConcept.conceptId}" />
 
-						<c:if test="${parentConcept.name.name eq 'Spermogram'}">
+						<c:if test="${parentConcept.name.name eq spermogram}">
 							<tr>
 								<td><input name="${fieldNameP}"
 									value="${labOrder.parentConcept.conceptId}" type="checkbox"
@@ -369,7 +370,7 @@ Request Form</legend>
 							</tr>
 
 						</c:if>
-						<c:if test="${parentConcept.name.name != 'Spermogram'}">
+						<c:if test="${parentConcept.name.name != spermogram}">
 							<tr>
 								<td><input name="${parentConcept.conceptId}"
 									value="${labOrder.parentConcept.conceptId}" type="checkbox"

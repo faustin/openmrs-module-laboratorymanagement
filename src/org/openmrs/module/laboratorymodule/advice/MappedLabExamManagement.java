@@ -30,15 +30,14 @@ public class MappedLabExamManagement {
 	 * @param endDate
 	 * @return Map<ConceptName, List<Object[]>>
 	 */
-	public static Map<ConceptName, List<Object[]>> getMappedExamsByLabType(
-			int patientId, Date startDate, Date endDate) {
+	public static Map<ConceptName, List<Object[]>> getMappedExamsByLabType(	int patientId, Date startDate, Date endDate) {
 		ConceptService cptService = Context.getConceptService();		
 		Map<ConceptName, List<Object[]>> mappedLabExam = new HashMap<ConceptName, List<Object[]>>();
 		
 		LaboratoryService laboratoryService = Context.getService(LaboratoryService.class);
 		// Initilializes an integer array where by each element is a group
 		// concepts of Lab tests
-		int intLabSetIds[]={ 7836,7217,7192,7243,7244,7265,7193,7835,10088,10027,7835,7222,7918,8046,7202};
+		int intLabSetIds[]={7836,7217,7192,7243,7244,7265,7193,7835,10088,10027,7835,7222,7918,8046,7202};
 		List<Obs> obsWithValues = null;
 		@SuppressWarnings("unused")
 		Object testStatus[] = null;

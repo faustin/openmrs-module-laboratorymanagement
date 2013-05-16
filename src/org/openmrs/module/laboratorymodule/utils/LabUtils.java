@@ -859,10 +859,9 @@ public class LabUtils {
 	}
 
 	/**
-	 * Auto generated method comment
-	 * 
-	 * @param labOrder
-	 * @return
+	 * Gets a List of all Lab orders  with multiple tests(Exple:Stool examination with its children) 
+	 * @param labOrder(linked to the Lab test whose children are tests)
+	 * @return List<Object[]>
 	 */
 	public static List<Object[]> getIncompleteLabOrderForOrderWithMultipleTests(
 			Order labOrder) {
@@ -875,8 +874,7 @@ public class LabUtils {
 
 			if (cpt.getDatatype().isNumeric()) {
 				orderHistory = new Object[] {
-						cpt,
-						cptService.getConceptNumeric(cpt.getConceptId())
+						cpt,cptService.getConceptNumeric(cpt.getConceptId())
 								.getUnits() };
 				orderHistoryList.add(orderHistory);
 			}
@@ -884,6 +882,15 @@ public class LabUtils {
 				orderHistory = new Object[] {cpt };
 				orderHistoryList.add(orderHistory);
 			}
+			if(cpt.getDatatype().isCoded()){
+				orderHistory = new Object[] {cpt };
+				orderHistoryList.add(orderHistory);
+			}
+			if(cpt.isSet()){
+				orderHistory = new Object[] {cpt };
+				orderHistoryList.add(orderHistory);
+			}
+			
 		}
 
 		return orderHistoryList;

@@ -1,21 +1,17 @@
 package org.openmrs.module.laboratorymodule.web.controller;
 
 import java.util.Collection;
-import java.util.Comparator;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
+
 
 import javax.servlet.http.HttpServletRequest;
 import org.openmrs.Concept;
 import org.openmrs.ConceptName;
-import org.openmrs.ConceptNumeric;
-import org.openmrs.Encounter;
-import org.openmrs.GlobalProperty;
 import org.openmrs.Location;
-import org.openmrs.Obs;
 import org.openmrs.Order;
 import org.openmrs.Patient;
 import org.openmrs.User;
@@ -27,7 +23,7 @@ import org.openmrs.module.laboratorymodule.advice.LabTestConstants;
 import org.openmrs.module.laboratorymodule.utils.GlobalPropertiesMgt;
 import org.openmrs.module.laboratorymodule.utils.LabUtils;
 import org.openmrs.module.mohappointment.model.Appointment;
-import org.openmrs.module.mohappointment.model.Services;
+
 import org.openmrs.module.mohappointment.utils.AppointmentUtil;
 import org.openmrs.web.controller.PortletController;
 
@@ -41,6 +37,7 @@ public class LabOrderPortletController extends PortletController {
 		int parasitologyId =LabTestConstants.PARASITOLOGYID;
 		int hemostasisId = LabTestConstants.hemostasisId;
 		int bacteriologyId = LabTestConstants.bacteriologyId;
+		int spermConceptId =LabTestConstants.spermConceptId;
 		int urinaryChemistryId= LabTestConstants.urineChemistryId ;
 		int immunoSerologyId = LabTestConstants.immunoSerologyId ;
 		int bloodChemistryId = LabTestConstants.bloodChemistryId ;
@@ -120,13 +117,13 @@ public class LabOrderPortletController extends PortletController {
 		model.put("mappedLabOrder", mappedLabOrder);
 		model.put("obsMap", orderObsMap);
 		model.put("providerName", providerName);
-		model.put("patienName", patientName);
-       // model.put("spermogram", Context.getConceptService().getConcept(spermConceptId).getName().getName());
+		model.put("patienName", patientName);     
 		model.put("labOrderparList", lopList);
 		model.put("hematology",Context.getConceptService().getConcept(hematologyId).getName().getName() );
 		model.put("parasitology",Context.getConceptService().getConcept(parasitologyId).getName());
 		model.put("hemostasis",Context.getConceptService().getConcept(hemostasisId).getName());
 		model.put("bacteriology",Context.getConceptService().getConcept(bacteriologyId).getName());
+		model.put("spermogram", Context.getConceptService().getConcept(spermConceptId).getName());
 		model.put("urinaryChemistry", Context.getConceptService().getConcept(urinaryChemistryId).getName());
 		model.put("immunoSerology", Context.getConceptService().getConcept(immunoSerologyId).getName());
 		model.put("bloodChemistry", Context.getConceptService().getConcept(bloodChemistryId).getName());
