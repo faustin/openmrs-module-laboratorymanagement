@@ -792,15 +792,10 @@ public class LabUtils {
 
 		waitingAppointment.setProvider(Context.getAuthenticatedUser()
 				.getPerson());
-		log.info("________PROVIDER________"
-				+ Context.getAuthenticatedUser().getPerson().getFamilyName());
 
 		waitingAppointment.setPatient(patient);
 		waitingAppointment.setLocation(Context.getLocationService()
 				.getDefaultLocation());
-
-		log.info("<<<<<<<<<____Service____" + service.toString()
-				+ "__________>>>>>>>");
 
 		waitingAppointment.setService(service);
 
@@ -836,15 +831,10 @@ public class LabUtils {
 				.getPerson());
 		waitingAppointment
 				.setNote("This is a waiting patient to the Consultation");
-		log.info("________PROVIDER________"
-				+ Context.getAuthenticatedUser().getPerson().getFamilyName());
 
 		waitingAppointment.setPatient(patient);
 		waitingAppointment.setLocation(Context.getLocationService()
 				.getDefaultLocation());
-
-		log.info("<<<<<<<<<____Service____" + service.toString()
-				+ "__________>>>>>>>");
 
 		waitingAppointment.setService(service);
 

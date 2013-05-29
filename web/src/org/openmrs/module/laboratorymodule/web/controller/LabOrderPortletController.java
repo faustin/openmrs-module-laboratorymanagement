@@ -1,5 +1,6 @@
 package org.openmrs.module.laboratorymodule.web.controller;
 
+import java.text.ParseException;
 import java.util.Collection;
 
 import java.util.Date;
@@ -81,7 +82,11 @@ public class LabOrderPortletController extends PortletController {
 					
 				
 			// Creating a waiting appointment in Laboratory when lab order is made:	
-			LabUtils.createWaitingLabAppointment(patient, null);
+			try {
+				LabUtils.createWaitingLabAppointment(patient, null);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 		}
 
 		
