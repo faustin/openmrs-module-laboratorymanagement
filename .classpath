@@ -28,7 +28,7 @@
 	<classpathentry kind="lib" path="lib-common/slf4j-simple-1.5.8.jar"/>
 	<classpathentry kind="lib" path="lib/iText-5.0.2.jar"/>
 	<classpathentry kind="lib" path="lib-common/openmrs-api-1.6.2.12911-dev.jar"/>
-	<classpathentry kind="lib" path="C:/Users/EMR/Documents/MOH Modules/moh-appointment/dist/mohappointment-0.0.7.jar"/>
 	<classpathentry kind="lib" path="web/module/labCodeForm.jsp"/>
+	<classpathentry kind="lib" path="lib-common/mohappointment-0.0.8.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

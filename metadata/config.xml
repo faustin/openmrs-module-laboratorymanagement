@@ -4,8 +4,8 @@
 <module configVersion="1.2">
 	
 	<!-- Base Module Properties -->
-	<id>laboratorymodule</id>
-	<name>Laboratory Module</name>
+	<id>laboratorymanagement</id>
+	<name>Laboratory Management</name>
 	<version>0.1.0.9</version>
 	<package>org.openmrs.module.@MODULE_ID@</package>
 	<author>MANIRAGENA Faustin</author>
