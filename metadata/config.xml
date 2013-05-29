@@ -4,14 +4,13 @@
 <module configVersion="1.2">
 	
 	<!-- Base Module Properties -->
-	<id>laboratorymanagement</id>
-	<name>Laboratory Management</name>
+	<id>laboratorymodule</id>
+	<name>Laboratory Module</name>
 	<version>0.1.0.9</version>
 	<package>org.openmrs.module.@MODULE_ID@</package>
 	<author>MANIRAGENA Faustin</author>
 	<description>
-			Laboratory Management Module. 
-			Helpful track the flow of patient lab orders and tests results.
+			Laboratory Module. helpful track the flow of patient lab.
 	</description>
 
 	<activator>@MODULE_PACKAGE@.LaboratoryModuleActivator</activator>

@@ -5,7 +5,7 @@
 <!-- ** @author MANIRAGENA                     ** -->
 <!-- ** @version 1.0                                        ** -->
 <!-- ********************************************************* -->
-<project name="laboratorymanagement" default="package-module">
+<project name="laboratorymodule" default="package-module">
 		
 	<!-- *********************************************************** -->
 	<!-- **                     TARGETS                           ** -->
