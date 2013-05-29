@@ -817,9 +817,10 @@ public class LabUtils {
 	 * 
 	 * @param patient
 	 *            the patient
+	 * @throws ParseException
 	 */
 	public static void createWaitingConsAppointment(Patient patient,
-			Encounter encounter) {
+			Encounter encounter) throws ParseException {
 
 		Appointment waitingAppointment = new Appointment();
 		Services service = AppointmentUtil.getServiceByConcept(Context
@@ -850,7 +851,9 @@ public class LabUtils {
 		if (encounter != null)
 			waitingAppointment.setEncounter(encounter);
 
-		AppointmentUtil.saveWaitingAppointment(waitingAppointment);
+		if (!AppointmentUtil.isPatientAlreadyWaitingThere(patient,
+				new AppointmentState(4, "WAITING"), service, new Date()))
+			AppointmentUtil.saveWaitingAppointment(waitingAppointment);
 
 	}
 
