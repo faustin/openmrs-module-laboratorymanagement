@@ -10,7 +10,8 @@
 	<package>org.openmrs.module.@MODULE_ID@</package>
 	<author>MANIRAGENA Faustin</author>
 	<description>
-			Laboratory Module. helpful track the flow of patient lab.
+			Laboratory Management Module. 
+			Helpful track the flow of patient lab orders and tests results.
 	</description>
 
 	<activator>@MODULE_PACKAGE@.LaboratoryModuleActivator</activator>
