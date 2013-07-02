@@ -95,4 +95,6 @@ public interface LaboratoryDAO {
 	 * @return the list of obs
 	 */
 	public List<Obs> getObsByLabOrder(Order order, Concept cpt);
+
+	public Collection<Encounter> getPatientEncountersByDate(int patientId, Date startDate,EncounterType encounterType);
 }

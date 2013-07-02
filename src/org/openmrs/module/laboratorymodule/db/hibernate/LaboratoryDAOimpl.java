@@ -55,6 +55,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Rectangle;
@@ -165,8 +166,8 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 		List<Obs> patientObservations = new ArrayList<Obs>();
 		Session session = getSessionFactory().getCurrentSession();
 		SQLQuery query = session
-				.createSQLQuery("SELECT  o.obs_id  FROM obs o where  o.obs_datetime  between  "		
-						
+				.createSQLQuery("SELECT  o.obs_id  FROM obs o where  o.obs_datetime  between  "
+
 						+ "'"
 						+ df.format(startDate)
 						+ "'and "
@@ -249,7 +250,6 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 						+ "'"
 						+ df.format(endDate)
 						+ "' and  ob.obs_id  in (select test_obs_id  from  trac_sample_test) ");
-		
 
 		List<Integer> testObsIds = query.list();
 
@@ -468,7 +468,8 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 	 * @see org.openmrs.module.laboratorymodule.db.LaboratoryDAO#getLabExamsByExamType(int,
 	 *      java.util.Collection, java.util.Date, java.util.Date)
 	 */
-	public List<Obs> getLabExamsByExamType(int patientId,	Collection<Integer> cptIds, Date startDate, Date endDate) {
+	public List<Obs> getLabExamsByExamType(int patientId,
+			Collection<Integer> cptIds, Date startDate, Date endDate) {
 		// TODO Auto-generated method stu
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		List<Obs> labExamsByCategory = new ArrayList<Obs>();
@@ -479,6 +480,7 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 
 		int i = 1;
 		for (Integer onecptId : cptIds) {
+
 			if (i < cptIds.size()) {
 				strbuf.append(" " + onecptId + ",");
 			}
@@ -493,15 +495,15 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 				+ df.format(startDate) + "' and '" + df.format(endDate) + "'");
 		query = sessionFactory.getCurrentSession().createSQLQuery(
 				strbuf.toString());
-		
+
 		List<Integer> obsIdFromQuery = query.list();
 
 		for (Integer integer : obsIdFromQuery) {
 			labExamsByCategory.add(labObbService.getObs(integer));
 		}
-   log.info(">>>>>>>>>Lab exams lists"+labExamsByCategory);
+
 		return labExamsByCategory;
-		
+
 	}
 
 	public List<Obs> getLabExamsByExamTypeBetweenTwoDates(Date startDate,
@@ -535,7 +537,7 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 			String title, int patientId) throws DocumentException, IOException {
 
 		Document document = new Document();
-		Patient patient=Context.getPatientService().getPatient(patientId);
+		Patient patient = Context.getPatientService().getPatient(patientId);
 		// List<PatientBill> patientBills =
 		// (List<PatientBill>)request.getAttribute("reportedPatientBillsPrint");
 
@@ -597,13 +599,13 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 		pa.setAlignment(Element.ALIGN_CENTER);
 		document.add(pa);
 		document.add(new Paragraph("\n"));
-	
-		document.add(fontTitle.process("Family Name: "+patient.getFamilyName()+"\n"));
-		document.add(fontTitle.process("Given name: "+patient.getGivenName()+"\n"));
-		document.add(fontTitle.process("Age: "+patient.getAge()+"\n"));
-	
-		
-		
+
+		document.add(fontTitle.process("Family Name: "
+				+ patient.getFamilyName() + "\n"));
+		document.add(fontTitle.process("Given name: " + patient.getGivenName()
+				+ "\n"));
+		document.add(fontTitle.process("Age: " + patient.getAge() + "\n"));
+
 		// title row
 		FontSelector fontTitleSelector = new FontSelector();
 		fontTitleSelector.addFont(new Font(FontFamily.COURIER, 9, Font.ITALIC));
@@ -677,7 +679,6 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 					cell = new PdfPCell(fontTitleSelector.process(""
 							+ ob.getValueNumeric()));
 					table.addCell(cell);
-					
 
 				}
 
@@ -687,19 +688,18 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 					table.addCell(cell);
 
 				}
-				
+
 				if (ob.getConcept().getDatatype().isText()) {
 					cell = new PdfPCell(fontTitleSelector.process(""
 							+ ob.getValueText()));
 					table.addCell(cell);
 
 				}
-				
 
 				cell = new PdfPCell(fontTitleSelector.process(""
 						+ (labExam[1] != null ? labExam[1] : "-")));
 				table.addCell(cell);
-			
+
 				fontselector.addFont(new Font(FontFamily.COURIER, 8,
 						Font.NORMAL));
 
@@ -827,7 +827,7 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 
 		}
 		strbuf.append(" ) and  o.patient_id=" + patientId);
-		strbuf.append("  and  o.voided= 0 " );
+		strbuf.append("  and  o.voided= 0 ");
 		strbuf.append("  " + " and  cast(o.start_date as date) =  '"
 				+ df.format(startDate) + "'");
 		query = sessionFactory.getCurrentSession().createSQLQuery(
@@ -852,7 +852,7 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 		SQLQuery query = null;
 		List<Order> ordersList = new ArrayList<Order>();
 		OrderService orderServic = Context.getOrderService();
-		StringBuffer strbuf = new StringBuffer();		
+		StringBuffer strbuf = new StringBuffer();
 		strbuf.append("SELECT  o.order_id  FROM orders o where o.patient_Id ="
 				+ patientId + "");
 		strbuf.append("  " + " and  cast(o.start_date as date) between  '"
@@ -924,30 +924,6 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 		return ordersList;
 	}
 
-	/*@Override
-	public List<Obs> getObsByLabOrder(int orderId) {
-		// TODO Auto-generated method stub
-		List<Obs>obsList=new ArrayList<Obs>();
-
-		SQLQuery query = null;
-		Obs labObs = null;
-		StringBuffer strbuf = new StringBuffer();
-		strbuf.append("Select o.obs_id from obs o where o.order_Id = "
-				+ orderId + " AND o.voided = 0");
-		query = sessionFactory.getCurrentSession().createSQLQuery(
-				strbuf.toString());		
-		List<Integer> obsIds = query.list();
-		
-		for (Integer labObsId :obsIds ) {
-			obsList.add(Context.getObsService().getObs(labObsId));
-			
-		}
-		
-		
-		return obsList;
-
-	}*/
-
 	@Override
 	public List<Obs> getAllpatientObs(int patientId) {
 		// TODO Auto-generated method stub
@@ -957,7 +933,7 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 	@Override
 	public boolean isFoundLabCode(String labCode) {
 		// TODO Auto-generated method stub
-		
+
 		boolean isFound = false;
 		SQLQuery query = null;
 
@@ -974,30 +950,32 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 	}
 
 	/**
-	 * @see org.openmrs.module.laboratorymodule.db.LaboratoryDAO#getPatientLabordersBetweendates(int, java.util.Date, java.util.Date)
+	 * @see org.openmrs.module.laboratorymodule.db.LaboratoryDAO#getPatientLabordersBetweendates(int,
+	 *      java.util.Date, java.util.Date)
 	 */
 	@Override
-	public Collection<Order> getPatientLabordersBetweendates(int patientId,	Date startDate, Date endDate) {
-		// TODO Auto-generated method stub		
+	public Collection<Order> getPatientLabordersBetweendates(int patientId,
+			Date startDate, Date endDate) {
+		// TODO Auto-generated method stub
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		SQLQuery query = null;
 		Collection<Order> ordersList = new ArrayList<Order>();
 		OrderService orderServic = Context.getOrderService();
 		StringBuffer strbuf = new StringBuffer();
-		strbuf.append("SELECT  o.order_id  FROM orders o where o.patient_Id ="+ patientId + "");
+		strbuf.append("SELECT  o.order_id  FROM orders o where o.patient_Id ="
+				+ patientId + "");
 		strbuf.append("  " + " and   cast(o.start_date as date) between  '"
 				+ df.format(startDate) + "' and '" + df.format(endDate) + "'");
 
 		query = sessionFactory.getCurrentSession().createSQLQuery(
 				strbuf.toString());
-		System.out.println(">>>>>order query between @22dates" + query.toString());
 
 		List<Integer> orderIdsFromQuery = query.list();
 		for (Integer orderId : orderIdsFromQuery) {
 			ordersList.add(orderServic.getOrder(orderId));
 
 		}
-		
+
 		return ordersList;
 	}
 
@@ -1006,25 +984,53 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 	 */
 	@Override
 	public List<Obs> getObsByLabCode(String labCode) {
-		Criteria query = sessionFactory.getCurrentSession().createCriteria(Obs.class)
-			.add(Restrictions.eq("accessionNumber", labCode))
-			.add(Restrictions.eq("voided", false));
+		Criteria query = sessionFactory.getCurrentSession().createCriteria(
+				Obs.class).add(Restrictions.eq("accessionNumber", labCode))
+				.add(Restrictions.eq("voided", false));
 		return query.list();
 	}
 
 	/**
-	 * @see org.openmrs.module.laboratorymodule.db.LaboratoryDAO#getObsByLabOrder(org.openmrs.Order, org.openmrs.Concept)
+	 * @see org.openmrs.module.laboratorymodule.db.LaboratoryDAO#getObsByLabOrder(org.openmrs.Order,
+	 *      org.openmrs.Concept)
 	 */
 	@Override
-	public List<Obs> getObsByLabOrder(Order order, Concept cpt){
-		log.info(">>>>>>>>>>>log info> within the existingorderObs>>>has concept>>"+order.getConcept().getConceptId());
-			Criteria query = sessionFactory.getCurrentSession().createCriteria(Obs.class)
-			.add(Restrictions.eq("order", order))
-			.add(Restrictions.eq("voided", false));
-		
+	public List<Obs> getObsByLabOrder(Order order, Concept cpt) {
+		log
+				.info(">>>>>>>>>>>log info> within the existingorderObs>>>has concept>>"
+						+ order.getConcept().getConceptId());
+		Criteria query = sessionFactory.getCurrentSession().createCriteria(
+				Obs.class).add(Restrictions.eq("order", order)).add(
+				Restrictions.eq("voided", false));
+
 		if (cpt != null)
 			query.add(Restrictions.eq("concept", cpt));
-		
+
 		return query.list();
+	}
+
+	@Override
+	public Collection<Encounter> getPatientEncountersByDate(int patientId,
+			Date startDate, EncounterType encounterType) {
+		// TODO Auto-generated method stub
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		Encounter labEncounter = null;
+		Collection<Encounter> encountersByDate = new ArrayList<Encounter>();
+		String formattedDate = df.format(startDate);
+		Criteria query = sessionFactory.getCurrentSession().createCriteria(
+				Encounter.class).add(Restrictions.eq("patientId", patientId))
+				.add(Restrictions.eq("encounterType", encounterType));
+		Collection<Encounter> encounterslist = query.list();
+	
+		if (encounterslist.size() > 0) {
+			for (Encounter encounter : encounterslist) {
+				String encounterDateStr = df.format(encounter.getEncounterDatetime());
+				if (encounterDateStr.equals(df.format(startDate))) {
+					encountersByDate.add(encounter);
+				}
+			}
+
+		}
+		return encountersByDate;
 	}
 }

@@ -226,7 +226,7 @@ Request Form</legend>
 						<c:set var="fieldNameP"
 							value="lab-${gdParentConcept}-${labOrder.parentConcept.conceptId}" />
 						<tr>
-							<td><input name="${parentConcept.conceptId}"
+							<td><input name="${fieldNameP}"
 								value="${parentConcept.conceptId}" type="checkbox"
 								id="parent_${labOrder.parentConcept.conceptId}" class="parent"><c:out
 								value="${labOrder.parentConcept.name}" /></td>

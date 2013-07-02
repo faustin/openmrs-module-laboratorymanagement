@@ -55,7 +55,7 @@
 				<prop key="module/@MODULE_ID@/addResult.form">addResultController</prop>						
 				<prop key="module/@MODULE_ID@/testStatistics.form">viewStatisticsController</prop>
 				<prop key="module/@MODULE_ID@/testByConcept.form">viewAlltestByConceptController</prop>
-				<prop key="module/@MODULE_ID@/exportToPDF.form">exportToPDF</prop>
+				<prop key="module/@MODULE_ID@/printLabResult.form">exportToPDF</prop>
 			    <prop key="module/@MODULE_ID@/chart.htm">labChartController</prop>
 			    <prop key="module/@MODULE_ID@/patientReport.form">patientReportController</prop>
 			     <prop key="module/@MODULE_ID@/monthlyReport.form">viewMonthlyReportController</prop>

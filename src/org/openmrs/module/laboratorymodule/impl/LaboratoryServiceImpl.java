@@ -210,8 +210,17 @@ public class LaboratoryServiceImpl implements		LaboratoryService {
 		
 		for (Obs obs : obss) {			
 			log.info("Purging existing obs" + obs.getObsId()+" has lab order"+obs.getOrder().getOrderId()+"and concept "+obs.getConcept());
-			Context.getObsService().purgeObs(obs);
+			//Context.getObsService().purgeObs(obs);
+			Context.getObsService().voidObs(obs, "updated obs");
+			
 		}
 	}
+
+	@Override
+	public Collection<Encounter> getPatientEncountersByDate(int patientId, Date startDate,EncounterType encounterType) {
+		
+		return laboratoryDAO.getPatientEncountersByDate(patientId,startDate,encounterType);
+	}
+	
 
 }

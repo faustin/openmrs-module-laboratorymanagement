@@ -81,12 +81,7 @@ public class LabOrderPortletController extends PortletController {
 			model.put("msg", "The Lab order is successfully created");
 					
 				
-			// Creating a waiting appointment in Laboratory when lab order is made:	
-			try {
-				LabUtils.createWaitingLabAppointment(patient, null);
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
+			LabUtils.createWaitingLabAppointment(patient, null);
 		}
 
 		

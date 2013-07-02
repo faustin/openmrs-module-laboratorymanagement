@@ -25,10 +25,10 @@ import org.openmrs.GlobalProperty;
 import org.openmrs.Obs;
 
 import org.openmrs.api.context.Context;
-import org.openmrs.api.context.ServiceContext;
+
 import org.openmrs.module.laboratorymodule.service.LaboratoryService;
 
-import org.openmrs.util.OpenmrsUtil;
+
 
 public class LaboratoryMgt {
 	protected final Log log = LogFactory.getLog(getClass());
@@ -106,9 +106,7 @@ public class LaboratoryMgt {
 					|| (onePatientObs.getValueText() != null)
 					|| (onePatientObs.getValueDatetime() != null)
 
-			) {
-				
-				
+			) {			
 
 				testWithResult.add(onePatientObs);
 
@@ -334,34 +332,13 @@ public class LaboratoryMgt {
 
 	}
 
-//	public static Map<Concept, Integer> getMappedLabConcepts(HttpServletRequest request) {
-//		LaboratoryService laboratoryService = Context.getService(LaboratoryService.class);
-//		List<Object[]> listOflabtest = new ArrayList<Object[]>();
-//		Object labTest[] = null;
-//		// int i = 5497;
-//		Collection<Integer> labconceptIds = getLabGlobalProperties();
-//		ConceptService cptService = Context.getConceptService();
-//		// Map the concepts with its size
-//		Map<Concept, Integer> mappedLabConcepts = new HashMap<Concept, Integer>();
-//		// For every labConceptId there is a mapped number of exams
-//		int i=0;
-//		for (Integer labConceptId : labconceptIds) {		
-//			
-//			mappedLabConcepts.put(cptService.getConcept(labConceptId),getHistoryOfLabTests(getAllTestWithResult(laboratoryService.getAllLabTest(labConceptId)), request).size());
-//					
-//			request.getSession().setAttribute("labTest_"+i,getHistoryOfLabTests(getAllTestWithResult(laboratoryService.getAllLabTest(labConceptId)), request));	
-//			System.out.println("the history of lab test>>>>>>>>>>"+getHistoryOfLabTests(getAllTestWithResult(laboratoryService.getAllLabTest(labConceptId)), request));			
-//			
-//			i++;
-//
-////			mappedLabConcepts.put(cptService.getConcept(labConceptId),
-////					laboratoryService.getAllLabTest(labConceptId).size());
-//
-//		}
-//
-//		return mappedLabConcepts;
-//	}
 
+
+	/**
+	 * Gets lab global properties
+	 * 
+	 * @return 
+	 */
 	public static Collection<Integer> getLabGlobalProperties() {
 		List<Integer> labConceptIds = new ArrayList<Integer>();
 		GlobalProperty gp = Context
@@ -455,5 +432,26 @@ public class LaboratoryMgt {
 		
 		return ret;
 	}
-
+	
+	/**
+	 * Utility method to get a parsed date parameter
+	 * 
+	 * @param request the HTTP request object
+	 * @param name the name of the date parameter
+	 * @param def the default value if parameter doesn't exist or is invalid
+	 * @return the date
+	 */
+	public  static Date getRightDate(HttpServletRequest request,String name) {
+		
+		String strDate = request.getParameter(name);
+		if (strDate != null) {
+			try {
+				return Context.getDateFormat().parse(strDate);
+			}
+			catch (Exception ex) {
+				//log.warn("Invalid date format: " + strDate);
+			}
+		}
+		return null;
+	}
 }

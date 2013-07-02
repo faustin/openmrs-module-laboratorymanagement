@@ -2,7 +2,6 @@ package org.openmrs.module.laboratorymodule;
 
 import java.util.List;
 
-import org.openmrs.Obs;
 import org.openmrs.Order;
 
 public class OrderObs {

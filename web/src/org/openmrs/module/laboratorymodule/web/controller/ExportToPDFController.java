@@ -17,6 +17,7 @@ import org.openmrs.ConceptName;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.laboratorymodule.advice.MappedLabExamManagement;
 import org.openmrs.module.laboratorymodule.service.LaboratoryService;
+import org.openmrs.module.laboratorymodule.utils.LabUtils;
 import org.openmrs.util.OpenmrsUtil;
 
 import org.springframework.web.servlet.ModelAndView;
@@ -59,8 +60,8 @@ public class ExportToPDFController extends AbstractController {
 		if (patientIdstr!=null){
 			int patientId=Integer.parseInt(patientIdstr);
 			
-			Map<ConceptName, List<Object[]>> mappedLabExam= MappedLabExamManagement	.getMappedExamsByLabType(patientId,startDate,endDate);
-			
+			//Map<ConceptName, List<Object[]>> mappedLabExam= MappedLabExamManagement	.getMappedExamsByLabType(patientId,startDate,endDate);
+			Map<ConceptName, List<Object[]>>	mappedLabExam = LabUtils.getPatientLabresults(patientId, startDate, endDate);
 			//Map<ConceptName, List<Object[]>> mappedLabExam  = (Map<ConceptName, List<Object[]>>) request.getSession().getAttribute("patientMappedLabExam");
 			laboratoryService.exportPatientReportToPDF(request, response, mappedLabExam, "patientReport.pdf", "test",patientId);
 					

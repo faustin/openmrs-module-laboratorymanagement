@@ -3,7 +3,7 @@ package org.openmrs.module.laboratorymodule;
 import java.util.List;
 
 import org.openmrs.Concept;
-import org.openmrs.Order;
+
 
 public class LabOrder {
 	private Concept parentConcept;

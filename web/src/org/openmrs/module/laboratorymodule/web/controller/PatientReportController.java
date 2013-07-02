@@ -14,7 +14,8 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.ConceptName;
 
 import org.openmrs.api.context.Context;
-import org.openmrs.module.laboratorymodule.advice.MappedLabExamManagement;
+
+import org.openmrs.module.laboratorymodule.utils.LabUtils;
 
 import org.openmrs.util.OpenmrsUtil;
 import org.springframework.web.servlet.ModelAndView;
@@ -61,8 +62,9 @@ public class PatientReportController extends ParameterizableViewController {
 				// patientLabExam =laboratoryService
 				// .getLabExamsByExamType(patientId);
 				
-				mappedLabExam = MappedLabExamManagement.getMappedExamsByLabType(patientId,startDate,endDate);
+				//mappedLabExam = MappedLabExamManagement.getMappedExamsByLabType(patientId,startDate,endDate);
 				
+				mappedLabExam = LabUtils.getPatientLabresults(patientId, startDate, endDate);
 				request.getSession().setAttribute("patientMappedLabExam",mappedLabExam);
 
 				model.put("mappedLabExams", mappedLabExam);

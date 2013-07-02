@@ -12,7 +12,7 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
 import org.openmrs.Order;
-import org.openmrs.Patient;
+
 import org.openmrs.api.context.Context;
 
 import org.openmrs.module.laboratorymodule.advice.LaboratoryMgt;
@@ -36,6 +36,7 @@ public class ViewLabOrderController extends ParameterizableViewController {
 		
 		String patientIdStr = request.getParameter("patientId");
 		Date startDate = LaboratoryMgt.getDateParameter(request, "startDate", lastMidnight);
+		
 		
 		Date endDate = LaboratoryMgt.getDateParameter(request, "endDate",zeroDay);
 		// String locationIdStr=request.getParameter("locationId");	
@@ -78,8 +79,8 @@ public class ViewLabOrderController extends ParameterizableViewController {
 			}
 			if(request.getParameter("edit") != null){
 				String labCode =request.getParameter("labCode");
-				
-				Encounter labEncounter = LabUtils.getLabEncounter(patientId);
+				Date startDat = LaboratoryMgt.getRightDate(request, "startDate");
+				Encounter labEncounter = LabUtils.getLabEncounter(patientId,startDat);
 				Context.getEncounterService().saveEncounter(labEncounter);
 				int orderId = ServletRequestUtils.getIntParameter(request, "orderId");
 	            Order labOrder =Context.getOrderService().getOrder(orderId);

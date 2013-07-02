@@ -108,4 +108,17 @@ public interface LaboratoryService {
 	 * @param cpt
 	 */
 	public void deleteExistingOrderObs(Order order,Concept cpt);
+	
+	/**
+	 * Gets a list of all patient encounters occured on start date
+	 * 
+	 * @param patientId
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	public Collection<Encounter> getPatientEncountersByDate(int patientId, Date startDate,EncounterType encounterType);
+		
+
+	
 	} 

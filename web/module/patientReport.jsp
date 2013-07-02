@@ -34,11 +34,11 @@
 <c:if test="${fn:length(mappedLabExams)>0}">
 	<b>LABORATORY TEST RESULTS</b>
 	<div style="float: right;">
-	<form action="exportToPDF.form" method="get"><input
+	<form action="printLabResult.form" method="get"><input
 		type="hidden" name="patientId" value="${patient.patientId}"> <input
 		type="hidden" name="startDate" value="${startDate}"> <input
 		type="hidden" name="endDate" value="${endDate}"> <input
-		type="submit" value="Export to pdf"></form>
+		type="submit" value="Pdf Lab results"></form>
 	</div>
 
 	<br>
@@ -94,29 +94,29 @@
 				<tr>
 					<c:choose>
 						<c:when test="${labTest[0].valueCoded != null}">
-							<td><c:out value="${labTest[0].concept.name}" /></td>
-							<td><c:out value="${labTest[0].valueCoded.name}" /></td>
+							<td><i><c:out value="${labTest[0].concept.name}" /></i></td>
+							<td><i><c:out value="${labTest[0].valueCoded.name}" /></i></td>
 							<td>-</td>
-							<td><c:out value="${labTest[0].order.orderer.familyName}" /></td>
+							<td><i><c:out value="${labTest[0].order.orderer.familyName}" /></i></td>
 						</c:when>
 						<c:when test="${labTest[0].valueNumeric != null}">
-							<td><c:out value="${labTest[0].concept.name}" /></td>
-							<td><c:out value="${labTest[0].valueNumeric}" /></td>
-							<td><c:out value="${labTest[1]}" /></td>
+							<td><i><c:out value="${labTest[0].concept.name}" /></i></td>
+							<td><i><c:out value="${labTest[0].valueNumeric}" /></i></td>
+							<td><i><c:out value="${labTest[1]}" /></i></td>
 
-							<td><c:out value="${labTest[0].order.orderer.familyName}" /></td>
+							<td><i><c:out value="${labTest[0].order.orderer.familyName}" /></i></td>
 						</c:when>
 						<c:when test="${labTest[0].valueText != null}">
-							<td><c:out value="${labTest[0].concept.name}" /></td>
-							<td><c:out value="${labTest[0].valueText}" /></td>
+							<td><i><c:out value="${labTest[0].concept.name}" /></i></td>
+							<td><i><c:out value="${labTest[0].valueText}" /></i></td>
 							<td></td>
 							<td></td>
 							<td></td>
 							<td></td>
 						</c:when>
 						<c:when test="${labTest[0].valueDatetime != null}">
-							<td><c:out value="${labTest[0].concept.name}" /></td>
-							<td><openmrs:formatDate date="${labTest[0].valueDatetime}" /></td>
+							<td><i><c:out value="${labTest[0].concept.name}" /></i></td>
+							<td><i><openmrs:formatDate date="${labTest[0].valueDatetime}" /></i></td>
 							<td></td>
 							<td></td>
 							<td></td>

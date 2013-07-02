@@ -37,7 +37,7 @@ public class MappedLabExamManagement {
 		LaboratoryService laboratoryService = Context.getService(LaboratoryService.class);
 		// Initilializes an integer array where by each element is a group
 		// concepts of Lab tests
-		int intLabSetIds[]={7836,7217,7192,7243,7244,7265,7193,7835,10088,10027,7835,7222,7918,8046,7202};
+		int intLabSetIds[]={7836, 7217, 7192, 7243, 7244, 7265, 7222,7193,7918, 7835,8046};
 		List<Obs> obsWithValues = null;
 		@SuppressWarnings("unused")
 		Object testStatus[] = null;
@@ -52,7 +52,16 @@ public class MappedLabExamManagement {
 			Collection<Integer>cptsLst = new ArrayList<Integer>();
 			for (ConceptSet setMember : setMembers) {
 				// if the datatype of member is text or numeric or coded add it to cptList
-				cptsLst.add(setMember.getConcept().getConceptId());
+				if(setMember.getConcept().isSet()){
+					for (ConceptSet childCpt : setMember.getConcept().getConceptSets()) {
+						cptsLst.add(childCpt.getConcept().getConceptId());
+					}
+				}
+				else{
+					cptsLst.add(setMember.getConcept().getConceptId());
+				}			
+				
+				
 			}
 			// run through all patient Lab observations and take only the Lab 
 			// obs whose values either coded,numeric or text is not null
@@ -61,9 +70,9 @@ public class MappedLabExamManagement {
 			for (Obs oneLabObs : obsWithValues) {
 				ConceptNumeric cptNumeric = cptService.getConceptNumeric(oneLabObs.getConcept().getConceptId());
 				// at index 0,put the obs as one Lab obs and then at index 1 the   normal range	
-		
+				if (oneLabObs != null && oneLabObs.getOrder()!=null) {
 					testStatus = new Object[]{oneLabObs,getNormalRanges(cptNumeric) };				
-					if (oneLabObs != null) {
+					
 						labExamHistory.add(testStatus);
 						}	
 			}
@@ -73,18 +82,12 @@ public class MappedLabExamManagement {
 				mappedLabExam.put(groupConcept.getName(), labExamHistory);
 			}
 
-		}
+		}		
 
-		int parasitConceptId = LabTestConstants.PARASITOLOGYID;
-		int urineConceptId=LabTestConstants.URINECONCEPTID;
-
-		Concept parasitConcept = Context.getConceptService().getConcept(parasitConceptId);
-		
-
-		List<Object[]> labObsHistory = getLabObsWithResults(patientId,parasitConceptId, startDate, endDate);
+		/*List<Object[]> labObsHistory = getLabObsWithResults(patientId,parasitConceptId, startDate, endDate);
 		if (labObsHistory.size()> 0) {
 			mappedLabExam.put(parasitConcept.getName(), labObsHistory);
-		}
+		}*/
 		
 		
 		return mappedLabExam;
