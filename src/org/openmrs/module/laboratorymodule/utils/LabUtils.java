@@ -42,7 +42,6 @@ import org.openmrs.module.mohappointment.model.Services;
 import org.openmrs.module.mohappointment.utils.AppointmentUtil;
 import org.openmrs.util.OpenmrsConstants;
 
-
 public class LabUtils {
 	protected static final Log log = LogFactory.getLog(LabUtils.class);
 
@@ -381,32 +380,40 @@ public class LabUtils {
 	@SuppressWarnings("deprecation")
 	public static Encounter getLabEncounter(int patientId, Date startDate) {
 		LocationService locService = Context.getLocationService();
-		String locationStr = Context.getAuthenticatedUser().getUserProperties().get(OpenmrsConstants.USER_PROPERTY_DEFAULT_LOCATION);
+		String locationStr = Context.getAuthenticatedUser().getUserProperties()
+				.get(OpenmrsConstants.USER_PROPERTY_DEFAULT_LOCATION);
 		Location dftLoc = locService.getDefaultLocation();
 		dftLoc = locService.getLocation(Integer.valueOf(locationStr));
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-		LaboratoryService laboratoryService = Context.getService(LaboratoryService.class);
-		EncounterType encounterType = Context.getEncounterService().getEncounterType(14);
+		LaboratoryService laboratoryService = Context
+				.getService(LaboratoryService.class);
+		EncounterType encounterType = Context.getEncounterService()
+				.getEncounterType(14);
 		// Get patient encounters by date
-		Encounter labEncounter=null;
-		Collection<Encounter> encountersList = laboratoryService.getPatientEncountersByDate(patientId, startDate,encounterType);
-		
-		if(encountersList.size()==0){		
-		    labEncounter = labEncounter = new Encounter();
+		Encounter labEncounter = null;
+		Collection<Encounter> encountersList = laboratoryService
+				.getPatientEncountersByDate(patientId, startDate, encounterType);
+
+		if (encountersList.size() == 0) {
+			labEncounter = labEncounter = new Encounter();
 			labEncounter.setEncounterDatetime(new Date());
 			labEncounter.setEncounterType(encounterType);
-			labEncounter.setPatient(Context.getPatientService().getPatient(patientId));
-			log.info(">>>>>>>>>>>>>>>>get default location"+Context.getLocationService().getDefaultLocation());
-			
+			labEncounter.setPatient(Context.getPatientService().getPatient(
+					patientId));
+			log.info(">>>>>>>>>>>>>>>>get default location"
+					+ Context.getLocationService().getDefaultLocation());
+
 			labEncounter.setLocation(dftLoc);
 			labEncounter.setProvider(Context.getAuthenticatedUser());
 		}
-		if(encountersList.size()>0){
+		if (encountersList.size() > 0) {
 			for (Encounter encounter : encountersList) {
-				String  encounterDateStr =df.format(encounter.getEncounterDatetime());
-				if(encounterDateStr.equals(df.format(startDate))){
-					labEncounter =encounter;
-				}			}
+				String encounterDateStr = df.format(encounter
+						.getEncounterDatetime());
+				if (encounterDateStr.equals(df.format(startDate))) {
+					labEncounter = encounter;
+				}
+			}
 		}
 		return labEncounter;
 	}
@@ -427,7 +434,7 @@ public class LabUtils {
 		Collection<Order> labOrders = laboratoryService
 				.getLabOrdersBetweentwoDate(patientId, startDate, endDate);
 		// Create the lab Encounter
-		Encounter labEncounter = getLabEncounter(patientId,startDate);
+		Encounter labEncounter = getLabEncounter(patientId, startDate);
 		Context.getEncounterService().saveEncounter(labEncounter);
 		for (Order laborder : labOrders) {
 			laborder.setAccessionNumber(labCode);
@@ -1074,7 +1081,8 @@ public class LabUtils {
 			labTestConceptIds.add(order.getConcept().getConceptId());
 		}
 		// Lab concept to run through
-		int labConceptIds[] = { 8004, 7836, 7265, 7243, 7244, 7835, 7192, 7222,	7217, 7835, 7193, 7918, 8046, 7991, 7202 };
+		int labConceptIds[] = { 8004, 7836, 7265, 7243, 7244, 7835, 7192, 7222,
+				7217, 7835, 7193, 7918, 8046, 7991, 7202 };
 
 		for (int labConceptId : labConceptIds) {
 			Concept groupConcept = cptService.getConcept(labConceptId);
@@ -1094,11 +1102,14 @@ public class LabUtils {
 				if (childrenConceptIds.contains(conceptId)) {
 
 					if (cpt.isSet()) {
+
 						Collection<Integer> cptsCollection = getConceptIdChilren(conceptId);
-						
-						log.info(">>>>>>>>>>this lab concept_ids collection "+cptsCollection);
-						
-						List<Obs> obsWithValues = laboratoryService.getLabExamsByExamType(patientId, cptsCollection, startDate, endDate);
+
+						log.info(">>>>>>>>>>this lab concept_ids collection "
+								+ cptsCollection);
+
+						//List<Obs> obsWithValues = laboratoryService.getLabExamsByExamType(patientId,cptsCollection, startDate, endDate);
+						List<Obs> obsWithValues = getObsByLabOrder(patientId, cpt, cptsCollection, startDate, endDate);
 						labExamHistory1 = getParametersOfLabConcept(obsWithValues);
 						mappedLabExam.put(cpt.getName(), labExamHistory1);
 
@@ -1162,6 +1173,33 @@ public class LabUtils {
 			}
 		}
 		return labExamHistory;
+	}
+
+	/**
+	 * Gets all Obs with values/result but linked to the ordered Lab orders
+	 * 
+	 * @param patientId
+	 * @param startDate
+	 * @param endDate
+	 * @return List<Obs>
+	 */
+	public static List<Obs> getObsByLabOrder(int patientId, Concept cpt,
+			Collection<Integer> cptIds, Date startDate, Date endDate) {
+		LaboratoryService laboratoryService = Context
+				.getService(LaboratoryService.class);
+		List<Obs> obsWithValues = laboratoryService.getLabExamsByExamType(
+				patientId, cptIds, startDate, endDate);
+
+		List<Obs> obsToLabOrder = new ArrayList<Obs>();
+		for (Obs obs : obsWithValues) {
+			if (obs.getOrder().getConcept().getConceptId() == cpt
+					.getConceptId()) {
+				obsToLabOrder.add(obs);
+			}
+
+		}
+		return obsToLabOrder;
+
 	}
 
 }

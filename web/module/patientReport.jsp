@@ -94,20 +94,20 @@
 				<tr>
 					<c:choose>
 						<c:when test="${labTest[0].valueCoded != null}">
-							<td><i><c:out value="${labTest[0].concept.name}" /></i></td>
-							<td><i><c:out value="${labTest[0].valueCoded.name}" /></i></td>
+							<td style="text-indent: 10px"><i><c:out value="${labTest[0].concept.name}" /></i></td>
+							<td ><i><c:out value="${labTest[0].valueCoded.name}" /></i></td>
 							<td>-</td>
 							<td><i><c:out value="${labTest[0].order.orderer.familyName}" /></i></td>
 						</c:when>
 						<c:when test="${labTest[0].valueNumeric != null}">
-							<td><i><c:out value="${labTest[0].concept.name}" /></i></td>
+							<td style="text-indent: 10px"><i><c:out value="${labTest[0].concept.name}" /></i></td>
 							<td><i><c:out value="${labTest[0].valueNumeric}" /></i></td>
 							<td><i><c:out value="${labTest[1]}" /></i></td>
 
 							<td><i><c:out value="${labTest[0].order.orderer.familyName}" /></i></td>
 						</c:when>
 						<c:when test="${labTest[0].valueText != null}">
-							<td><i><c:out value="${labTest[0].concept.name}" /></i></td>
+							<td style="text-indent: 10px"><i><c:out value="${labTest[0].concept.name}" /></i></td>
 							<td><i><c:out value="${labTest[0].valueText}" /></i></td>
 							<td></td>
 							<td></td>
@@ -115,7 +115,7 @@
 							<td></td>
 						</c:when>
 						<c:when test="${labTest[0].valueDatetime != null}">
-							<td><i><c:out value="${labTest[0].concept.name}" /></i></td>
+							<td style="text-indent: 10px"><i><c:out value="${labTest[0].concept.name}" /></i></td>
 							<td><i><openmrs:formatDate date="${labTest[0].valueDatetime}" /></i></td>
 							<td></td>
 							<td></td>
