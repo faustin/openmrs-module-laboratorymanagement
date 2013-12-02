@@ -31,8 +31,7 @@ public class ExportToPDFController extends AbstractController {
 			HttpServletResponse response) throws Exception {
 		SimpleDateFormat df = OpenmrsUtil.getDateFormat();
 
-		LaboratoryService laboratoryService = Context
-				.getService(LaboratoryService.class);
+		LaboratoryService laboratoryService = Context.getService(LaboratoryService.class);
 		String conceptIdStr = request.getParameter("testType");
 		String patientIdstr=request.getParameter("patientId");
 		
@@ -61,6 +60,7 @@ public class ExportToPDFController extends AbstractController {
 			int patientId=Integer.parseInt(patientIdstr);
 			
 			//Map<ConceptName, List<Object[]>> mappedLabExam= MappedLabExamManagement	.getMappedExamsByLabType(patientId,startDate,endDate);
+			//Object patientIdentifElement [] = LabUtils.getPatientIdentificationFromLab(patientId, startDate, endDate);
 			Map<ConceptName, List<Object[]>>	mappedLabExam = LabUtils.getPatientLabresults(patientId, startDate, endDate);
 			//Map<ConceptName, List<Object[]>> mappedLabExam  = (Map<ConceptName, List<Object[]>>) request.getSession().getAttribute("patientMappedLabExam");
 			laboratoryService.exportPatientReportToPDF(request, response, mappedLabExam, "patientReport.pdf", "test",patientId);

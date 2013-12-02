@@ -29,6 +29,7 @@ import org.openmrs.Obs;
 import org.openmrs.Order;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.LocationService;
+import org.openmrs.api.ObsService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.laboratorymodule.EveryOrder;
 import org.openmrs.module.laboratorymodule.LabOrder;
@@ -36,6 +37,7 @@ import org.openmrs.module.laboratorymodule.LabOrderParent;
 
 import org.openmrs.module.laboratorymodule.OrderObs;
 import org.openmrs.module.laboratorymodule.PatientLabOrder;
+import org.openmrs.module.laboratorymodule.advice.LaboratoryMgt;
 import org.openmrs.module.laboratorymodule.service.LaboratoryService;
 import org.openmrs.module.mohappointment.model.Appointment;
 import org.openmrs.module.mohappointment.model.Services;
@@ -71,8 +73,7 @@ public class LabUtils {
 	 *            the value of the obs
 	 * @return the new obs
 	 */
-	public static Obs createObs(Obs existingObs, Order labOrder, Concept cpt,
-			String obsValue, String comment) {
+	public static Obs createObs(Obs existingObs, Order labOrder, Concept cpt, String obsValue, String comment) {
 		Encounter labEncounter = labOrder.getEncounter();
 		log.info("This is the comment" + comment);
 		// if the obs is null ,then create a new obs
@@ -134,13 +135,18 @@ public class LabUtils {
 			if (!parameterName.startsWith("labTest-")) {
 				continue;
 			}
-
+			
 			String[] parameterValues = parameterMap.get(parameterName);
+			
 			String[] splittedParameterName = parameterName.split("-");
 
 			String conceptIdStr = splittedParameterName[1];
 			String orderIdStr = splittedParameterName[2];
-			String singleValue = parameterValues[0];
+			//String singleValue = parameterValues[0];
+			
+			for (String singleValue : parameterValues) {			
+			
+		
 			// if the value from select box is -2,go to the next test than
 			// continuing
 			if (singleValue.equals("-2"))
@@ -149,7 +155,7 @@ public class LabUtils {
 					+ orderIdStr;
 
 			if (request.getParameter(resultComments) != null) {
-				comment = request.getParameter(resultComments);
+				comment = request.getParameter(resultComments);				
 
 			}
 
@@ -159,24 +165,20 @@ public class LabUtils {
 			// int parentConceptId=splittedParameterName.length == 4 ?
 			// Integer.parseInt(splittedParameterName[3]) : 0;
 			Order labOrder = Context.getOrderService().getOrder(orderId);
-			Concept memberConcept = Context.getConceptService().getConcept(
-					conceptId);
+			Concept memberConcept = Context.getConceptService().getConcept(conceptId);
 
 			// Can this order's concept take multiple answers?
-			Map<Concept, Boolean> multipleAnswerConcepts = GlobalPropertiesMgt
-					.getConceptHasMultipleAnswers();
-			boolean isMultipleAnswer = multipleAnswerConcepts
-					.containsKey(memberConcept);
+			Map<Concept, Boolean> multipleAnswerConcepts = GlobalPropertiesMgt.getConceptHasMultipleAnswers();
+			boolean isMultipleAnswer = multipleAnswerConcepts.containsKey(memberConcept);
 
 			if (isMultipleAnswer) {
-				saveMultipleResultsOnOnelabtest(labOrder, parameterValues,
-						memberConcept, comment);
-			} else {
-				log.info("Saving single answer (" + singleValue
-						+ ") obs for concept " + memberConcept);
+				saveMultipleResultsOnOnelabtest(labOrder, parameterValues,	memberConcept, comment);
+			}
+			else {
+				log.info("is this single answer (" + singleValue+ ") obs for concept " + memberConcept);
 				saveSingleResult(labOrder, singleValue, memberConcept, comment);
 			}
-
+		  }
 		}
 	}
 
@@ -223,25 +225,20 @@ public class LabUtils {
 	public static void saveSingleResult(Order labOrder, String singleValue,
 			Concept memberConcept, String comment) {
 		Obs labObservation = null;
+	
+		//List<Obs> obss = laboratoryService.getExistingOrderObs(labOrder,	memberConcept);		
 
-		LaboratoryService laboratoryService = Context
-				.getService(LaboratoryService.class);
-		List<Obs> obss = laboratoryService.getExistingOrderObs(labOrder,
-				memberConcept);
-
-		log.info(">>>>>>>>List obs >>>>>cpt>>>>>>" + obss);
-		// since each obs is linked to one ,then get it at index 0
-
-		Obs existingObs = obss.size() == 0 ? null : obss.get(0);
+		//Obs existingObs = obss.size() == 0 ? null : obss.get(0);
+		
+		Obs existingObs = LaboratoryMgt.getTheExistingObsByLabOrder(labOrder, memberConcept);
+		log.info(">>>>>>>>is this >>>>existing obs> "+existingObs);
 
 		log.info(">>>>>>>>>>" + singleValue + "+is for lab tests "
 				+ memberConcept.getName().getName());
 
 		if (singleValue != null && !singleValue.equals("")) {
-			labObservation = LabUtils.createObs(existingObs, labOrder,
-					memberConcept, singleValue, comment);
-			Context.getObsService().saveObs(labObservation,
-					"Updated lab test result");
+			labObservation = LabUtils.createObs(existingObs, labOrder,	memberConcept, singleValue, comment);
+			Context.getObsService().saveObs(labObservation,	"Updated lab test result");
 		}
 
 	}
@@ -259,8 +256,7 @@ public class LabUtils {
 
 		// Initilializes an integer array of length 2 where the first element is
 		// 7005, second element is 7006 and so on.
-		int intLabSetIds[] = { 7836, 7217, 7192, 7243, 7244, 7265, 7222, 7193,
-				8046, 7991, 7193 };
+		int intLabSetIds[] = { 7836, 7217, 7192, 7243, 7244, 7265, 7222, 7193,	8046, 7991, 7193 };
 		@SuppressWarnings("unused")
 		Object testStatus[] = null;
 		for (int labSetid : intLabSetIds) {
@@ -309,8 +305,7 @@ public class LabUtils {
 			String chldCptIdStr = splittedParameterName.length > 3 ? splittedParameterName[3]
 					: "";
 			String SingleLabConceptIdstr = parameterValues[0];
-			String accessionNumber = "access-" + gpCptIdStr + "-" + pcptIdstr
-					+ "-" + chldCptIdStr;
+			String accessionNumber = "access-" + gpCptIdStr + "-" + pcptIdstr+ "-" + chldCptIdStr;
 
 			Order labOrder = new Order();
 			labOrder.setOrderer(Context.getAuthenticatedUser());
@@ -319,8 +314,7 @@ public class LabUtils {
 					Integer.parseInt(SingleLabConceptIdstr)));
 			labOrder.setStartDate(new Date());
 			// labOrder.setAccessionNumber(accessionNumber);
-			labOrder.setOrderType(Context.getOrderService().getOrderType(
-					labOrderTypeId));
+			labOrder.setOrderType(Context.getOrderService().getOrderType(labOrderTypeId));
 			Context.getOrderService().saveOrder(labOrder);
 
 		}
@@ -346,8 +340,7 @@ public class LabUtils {
 		Map<Concept, Collection<Order>> mappedLabOrders = new HashMap<Concept, Collection<Order>>();
 		ConceptService cptService = Context.getConceptService();
 
-		int intLabSetIds[] = { 8004, 7836, 7217, 7192, 7243, 7244, 7265, 7222,
-				7193, 7918, 7835, 8046 };
+		int intLabSetIds[] = { 8004, 7836, 7217, 7192, 7243, 7244, 7265, 7222, 7193, 7918, 7991,7835, 8046 };
 
 		for (int labSetid : intLabSetIds) {
 			Concept cpt = cptService.getConcept(labSetid);
@@ -917,40 +910,60 @@ public class LabUtils {
 	 *            (linked to the Lab test whose children are tests)
 	 * @return List<Object[]>
 	 */
-	public static List<Object[]> getIncompleteLabOrderForOrderWithMultipleTests(
-			Order labOrder) {
-		ConceptService cptService = Context.getConceptService();
+	public static List<Object[]> getIncompleteLabOrderForOrderWithMultipleTests(Order labOrder) {
+		
 		Collection<ConceptSet> cptSets = labOrder.getConcept().getConceptSets();
-		Object[] orderHistory = null;
+		//Object[] orderHistory = null;
 		List<Object[]> orderHistoryList = new ArrayList<Object[]>();
-		for (ConceptSet conceptSet : cptSets) {
+		for (ConceptSet conceptSet : cptSets) {			
 			Concept cpt = conceptSet.getConcept();
-
-			if (cpt.getDatatype().isNumeric()) {
-				orderHistory = new Object[] {
-						cpt,
-						cptService.getConceptNumeric(cpt.getConceptId())
-								.getUnits() };
-				orderHistoryList.add(orderHistory);
+			if(cpt.isSet()){				
+				
+				for (ConceptSet cptSt : cpt.getConceptSets()) {					
+					Concept concept = cptSt.getConcept();					
+					Object[] orderHistory =getIncompleteLabOrder(concept);
+					//log.info(">>>>>>>>children of concept"+concept.getName()+":"+orderHistory[0]);
+					orderHistoryList.add(orderHistory);
+				}
+			}			
+			else{
+				Object[] orderHistory =getIncompleteLabOrder(cpt);
+				orderHistoryList.add(orderHistory);  
+			
 			}
-			if (cpt.getDatatype().isText()) {
-				orderHistory = new Object[] { cpt };
-				orderHistoryList.add(orderHistory);
-			}
-			if (cpt.getDatatype().isCoded()) {
-				orderHistory = new Object[] { cpt };
-				orderHistoryList.add(orderHistory);
-			}
-			if (cpt.isSet()) {
-				orderHistory = new Object[] { cpt };
-				orderHistoryList.add(orderHistory);
-			}
+			
 
 		}
 
 		return orderHistoryList;
 
 	}
+public static Object[] getIncompleteLabOrder(Concept cpt){
+	Object[] orderHistory = null;
+	if(cpt.getDatatype().isNumeric()){
+	ConceptNumeric	cptNumeric =Context.getConceptService().getConceptNumeric(cpt.getConceptId());
+	
+		if(cptNumeric.getUnits()!=null){
+			orderHistory = new Object[] { cpt,cptNumeric.getUnits() };	
+		}
+		
+		
+	}
+	if (cpt.getDatatype().isText()) {
+		orderHistory = new Object[] { cpt };	
+	}
+	if (cpt.getDatatype().isCoded()) {
+		orderHistory = new Object[] { cpt };
+	}
+		
+	if (cpt.isSet()) {
+		orderHistory = new Object[] { cpt };
+		
+	}
+	
+	return orderHistory;
+	
+}
 
 	private static Comparator<OrderObs> LAB_RESULT_COMPARATOR = new Comparator<OrderObs>() {
 		// This is where the sorting happens.
@@ -1081,8 +1094,7 @@ public class LabUtils {
 			labTestConceptIds.add(order.getConcept().getConceptId());
 		}
 		// Lab concept to run through
-		int labConceptIds[] = { 8004, 7836, 7265, 7243, 7244, 7835, 7192, 7222,
-				7217, 7835, 7193, 7918, 8046, 7991, 7202 };
+		int labConceptIds[] = {8004,7836, 7265, 7243, 7244, 7835, 7192, 7222,	7217, 7835, 7193, 7918, 8046, 7991, 7202 };
 
 		for (int labConceptId : labConceptIds) {
 			Concept groupConcept = cptService.getConcept(labConceptId);
@@ -1110,6 +1122,7 @@ public class LabUtils {
 
 						//List<Obs> obsWithValues = laboratoryService.getLabExamsByExamType(patientId,cptsCollection, startDate, endDate);
 						List<Obs> obsWithValues = getObsByLabOrder(patientId, cpt, cptsCollection, startDate, endDate);
+					
 						labExamHistory1 = getParametersOfLabConcept(obsWithValues);
 						mappedLabExam.put(cpt.getName(), labExamHistory1);
 
@@ -1200,6 +1213,69 @@ public class LabUtils {
 		}
 		return obsToLabOrder;
 
+	}
+	
+public  static Object[] getPatientIdentificationFromLab(int patientId,Date startDate, Date endDate){
+	
+	ConceptService cptService = Context.getConceptService();
+	LaboratoryService laboratoryService = Context.getService(LaboratoryService.class);
+	Collection<Integer> labTestConceptIds = new ArrayList<Integer>();
+	Object patientIdentifElement [] = null;
+    Collection<Order> labOrderList =  laboratoryService.getPatientLabordersBetweendates(patientId, startDate, endDate);
+
+	int labConceptIds[] = {8004,7836, 7265, 7243, 7244, 7835, 7192, 7222,	7217, 7835, 7193, 7918, 8046, 7991, 7202 };
+	for (Order order : labOrderList) {
+		labTestConceptIds.add(order.getConcept().getConceptId());
+	}
+	for (int labConceptId : labConceptIds) {	
+
+		ArrayList<Integer> cptList = new ArrayList<Integer>();
+		Collection<Integer> childrenConceptIds = getConceptIdChilren(labConceptId);
+
+		// run through Lab tests conceptIds list and check whether it is
+		// contained in children Concepts
+		for (Integer conceptId : labTestConceptIds) {
+
+			Concept cpt = cptService.getConcept(conceptId);
+
+			if (childrenConceptIds.contains(conceptId)) {
+
+				if (cpt.isSet()) {
+
+					Collection<Integer> cptsCollection = getConceptIdChilren(conceptId);
+					
+
+					//List<Obs> obsWithValues = laboratoryService.getLabExamsByExamType(patientId,cptsCollection, startDate, endDate);
+					List<Obs> obsWithValues = getObsByLabOrder(patientId, cpt, cptsCollection, startDate, endDate);
+					Obs labObs =obsWithValues.get(0);
+					patientIdentifElement = new Object[] {labObs.getAccessionNumber(),labObs.getOrder() };
+				
+					
+
+				}
+				else {
+					
+					cptList.add(conceptId);
+					List<Obs> obsWithValues = laboratoryService.getLabExamsByExamType(patientId, cptList,	startDate, endDate);
+					try {						
+						Obs labObs = obsWithValues.get(0);
+						patientIdentifElement  = new Object[] { labObs.getAccessionNumber(),labObs.getOrder() };
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
+				
+					
+				}
+				
+
+			}
+		}
+		
+
+	}
+		
+		return patientIdentifElement ;
+		
 	}
 
 }

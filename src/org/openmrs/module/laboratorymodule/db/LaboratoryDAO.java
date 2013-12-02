@@ -62,7 +62,7 @@ public interface LaboratoryDAO {
 
 	public void exportPatientReportToPDF(HttpServletRequest request,
 			HttpServletResponse response,Map<ConceptName, List<Object[]>> mappedLabExam,
-			String filename, String title,int patientId) throws DocumentException, IOException;
+			String filename, String title,int patientId ) throws DocumentException, IOException;
 
 	public List<Obs> getAllNegtiveLabExams(Date startDate, Date endDate,
 			int conceptId);

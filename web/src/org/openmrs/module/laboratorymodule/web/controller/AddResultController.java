@@ -43,8 +43,7 @@ public class AddResultController extends ParameterizableViewController {
 		// of all lab tests linked to that concept
 		Map<Concept, List<Object[]>> groupedMultipletest = new HashMap<Concept, List<Object[]>>();
 
-		LaboratoryService laboratoryService = Context
-				.getService(LaboratoryService.class);
+		LaboratoryService laboratoryService = Context.getService(LaboratoryService.class);
 
 		if (request.getParameter("labCode") != null
 				&& !request.getParameter("labCode").equals("")) {
@@ -58,7 +57,7 @@ public class AddResultController extends ParameterizableViewController {
 				List<Object[]> orderHistryList = null;
 				Object[] orderHistory = null;
 
-				int intLabSetIds[] = {8004,7836, 7217, 7192, 7243, 7244, 7265,	7222, 7193, 7918, 7835, 8046 };
+				int intLabSetIds[] = {7836,7217, 7192, 7202, 7243, 7244, 7265,7222, 7193, 7918, 7835, 8046 };
 
 				for (int labConceptId : intLabSetIds) {
 					Concept labConcept = Context.getConceptService().getConcept(labConceptId);
@@ -68,7 +67,6 @@ public class AddResultController extends ParameterizableViewController {
 					for (ConceptSet conceptSet : cptSets) {
 						Concept cpt = conceptSet.getConcept();
 						cptList.add(cpt);
-
 					}
 					// run through all orders and group all Lab tests that are
 					// from one group
@@ -101,7 +99,6 @@ public class AddResultController extends ParameterizableViewController {
 							}
 							orderHistory = LabUtils	.getIncompleteLabExam(labOrder);
 							incompleteLabExams.add(orderHistory);
-
 						}
 
 					}
@@ -144,7 +141,7 @@ public class AddResultController extends ParameterizableViewController {
 
 			/**
 			 * <<<<<<<<<< APPOINTMENT CONSULTATION WAITING CREATED HERE
-			 * >>>>>>>>>>
+			 * >>>>>>>>>>parameterMap
 			 */
 
 			if (request.getParameter("patient_id") != null

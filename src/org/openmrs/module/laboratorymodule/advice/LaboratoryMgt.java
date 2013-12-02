@@ -23,8 +23,12 @@ import org.openmrs.ConceptSet;
 import org.openmrs.EncounterType;
 import org.openmrs.GlobalProperty;
 import org.openmrs.Obs;
+import org.openmrs.Order;
+import org.openmrs.Role;
+import org.openmrs.User;
 
 import org.openmrs.api.context.Context;
+import org.openmrs.api.db.UserDAO;
 
 import org.openmrs.module.laboratorymodule.service.LaboratoryService;
 
@@ -454,4 +458,31 @@ public class LaboratoryMgt {
 		}
 		return null;
 	}
+	
+	public  static Obs getTheExistingObsByLabOrder(Order labOrder,	Concept cpt){
+		Obs existingObs = null;
+		System.out.println(">>>>>>>>>>is this the right Lab concept>>>"+cpt.getConceptId());
+		
+		LaboratoryService laboratoryService = Context.getService(LaboratoryService.class);
+		List<Obs> obssList = laboratoryService.getExistingOrderObs(labOrder, cpt);	
+		
+		if(obssList.size()>0){
+			existingObs =new Obs();
+		for (Obs obs : obssList) {
+			if((obs.getConcept().getConceptId()== cpt.getConceptId()) && (obs.getOrder().getOrderId()== labOrder.getOrderId())){
+				existingObs = obs;
+				
+				break;
+				
+			}
+			
+		}
+		}
+		
+		return existingObs;
+		
+	}
+	
+
+	
 }

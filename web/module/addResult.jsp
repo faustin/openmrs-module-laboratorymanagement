@@ -5,8 +5,7 @@
 <openmrs:htmlInclude
 	file="/moduleResources/laboratorymodule/menuStyle.css" />
 <openmrs:htmlInclude file="/moduleResources/laboratorymodule/jquery.js" />
-<openmrs:htmlInclude
-	file="/moduleResources/laboratorymodule/chosen.jquery.min.js" />
+<openmrs:htmlInclude file="/moduleResources/laboratorymodule/chosen.jquery.min.js" />
 <openmrs:htmlInclude file="/moduleResources/laboratorymodule/chosen.css" />
 <openmrs:htmlInclude
 	file="/moduleResources/laboratorymodule/jsControl.js" />
@@ -23,6 +22,10 @@
 				$t("#cmt_" + conceptId).show(); //show the field when the user clicks on button.
 
 				});
+			$t(".my_select_box").chosen({max_selected_options: 5});
+			
+			
+			
 		});
 </script>
 
@@ -109,32 +112,33 @@
 							<td colspan="3" style="width: 250px; font-weight: italic"><c:out
 								value="${concept.name}" /></td>
 							<td><c:choose>
-								<c:when test="${multipleAnswerConcepts[concept]}">
+								 <c:when test="${multipleAnswerConcepts[concept]}">
 									<c:forEach items="${concept.answers}" var="answer">
 										<input type="checkbox" name="${fieldName}"
 											checked="${obsResult.valueCoded != null ? 'checked' : ''}"
 											value="${answer.answerConcept.conceptId}" />
 										${answer.answerConcept.name}
 										&nbsp;&nbsp;&nbsp;
+									
 									</c:forEach>
-							 </c:when>
-							<c:otherwise>
-							  <select name="${fieldName}">
+							</c:when>
+						<c:otherwise>
+						 <select name="${fieldName}"  style="width: 650px; display: none;" class="my_select_box" data-placeholder ="Select Lab results" multiple = "multiple">
 		                             <option value="-2"></option>
 									<c:forEach items="${concept.answers}" var="answer">
 											<option value="${answer.answerConcept.conceptId}"
 												<c:if test="${obsResult != null && obsResult.valueCoded.conceptId == answer.answerConcept.conceptId}">
 													selected="selected"
 												</c:if>>${answer.answerConcept.name}
-									  </option>
-									</c:forEach>
-								</select>
-									</c:otherwise>
+									  		</option>
+								 	</c:forEach>
+							</select>
+														
+							</c:otherwise>
 							</c:choose></td>
 							<td><input name="${resultComment}" type="text" value=""
 								class="cmt" id="cmt_${concept.conceptId}"><span
-								id="addComments_${concept.conceptId}" class="bouton }"><img
-								src="${pageContext.request.contextPath}/images/add.gif"
+								id="addComments_${concept.conceptId}" class="bouton }"><img	src="${pageContext.request.contextPath}/images/add.gif"
 								style="cursor: pointer;" /></span></td>
 
 						</tr>
@@ -259,15 +263,15 @@
 														${answer.answerConcept.name}
 														&nbsp;&nbsp;&nbsp;
 													 </c:forEach>
-												  </c:when>
+												  	</c:when>
 												 <c:otherwise>
-													<select name="${fieldName}">
+												<select name="${fieldName}" multiple = "multiple">
 															<c:forEach items="${childConcept.answers}" var="answer">
-															<option value="${answer.answerConcept.conceptId}"
+															 <option value="${answer.answerConcept.conceptId}"
 																	<c:if test="${childResult != null && childResult.valueCoded.conceptId == answer.answerConcept.conceptId}">
 																	selected="selected"
 																</c:if>>${answer.answerConcept.name}
-														   </option>
+														 </option>
 													    </c:forEach>
 														</select>
 													</c:otherwise>

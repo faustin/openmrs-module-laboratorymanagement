@@ -79,11 +79,13 @@
 		<td><b>Test name</b></td>
 		<td><b>Result</b></td>
 		<td><b>Normal range</b></td>
+		<td><b>Lab code</b></td>
 		<td>Orderer</td>
 		<c:forEach var="labExamMap" items="${mappedLabExams}"
 			varStatus="status">
 			<tr>
 				<td><b>${labExamMap.key}</b></td>
+				<td></td>
 				<td></td>
 				<td></td>
 				<td></td>
@@ -97,29 +99,28 @@
 							<td style="text-indent: 10px"><i><c:out value="${labTest[0].concept.name}" /></i></td>
 							<td ><i><c:out value="${labTest[0].valueCoded.name}" /></i></td>
 							<td>-</td>
+							<td><i><c:out value="${labTest[0].accessionNumber}" /></i></td>
 							<td><i><c:out value="${labTest[0].order.orderer.familyName}" /></i></td>
 						</c:when>
 						<c:when test="${labTest[0].valueNumeric != null}">
 							<td style="text-indent: 10px"><i><c:out value="${labTest[0].concept.name}" /></i></td>
 							<td><i><c:out value="${labTest[0].valueNumeric}" /></i></td>
 							<td><i><c:out value="${labTest[1]}" /></i></td>
-
+							<td><i><c:out value="${labTest[0].accessionNumber}" /></i></td>
 							<td><i><c:out value="${labTest[0].order.orderer.familyName}" /></i></td>
 						</c:when>
 						<c:when test="${labTest[0].valueText != null}">
 							<td style="text-indent: 10px"><i><c:out value="${labTest[0].concept.name}" /></i></td>
 							<td><i><c:out value="${labTest[0].valueText}" /></i></td>
-							<td></td>
-							<td></td>
-							<td></td>
+							<td></td>							
+							<td><i><c:out value="${labTest[0].accessionNumber}" /></i></td>
 							<td></td>
 						</c:when>
 						<c:when test="${labTest[0].valueDatetime != null}">
 							<td style="text-indent: 10px"><i><c:out value="${labTest[0].concept.name}" /></i></td>
 							<td><i><openmrs:formatDate date="${labTest[0].valueDatetime}" /></i></td>
-							<td></td>
-							<td></td>
-							<td></td>
+							<td></td>							
+							<td><i><c:out value="${labTest[0].accessionNumber}" /></i></td>
 							<td></td>
 						</c:when>
 					</c:choose>

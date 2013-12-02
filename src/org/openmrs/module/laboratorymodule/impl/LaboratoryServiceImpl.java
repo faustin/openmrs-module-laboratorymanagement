@@ -130,7 +130,7 @@ public class LaboratoryServiceImpl implements		LaboratoryService {
 
 	public void exportPatientReportToPDF(HttpServletRequest request,
 	HttpServletResponse response, Map<ConceptName, List<Object[]>> mappedLabExam,
-	String filename, String title,int patientId) throws DocumentException, IOException {
+	String filename, String title,int patientId ) throws DocumentException, IOException {
 		
 		// TODO Auto-generated method stub
 		 laboratoryDAO.exportPatientReportToPDF(request, response, mappedLabExam,

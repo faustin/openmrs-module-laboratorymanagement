@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,6 +42,8 @@ import org.openmrs.EncounterType;
 import org.openmrs.Obs;
 import org.openmrs.Order;
 import org.openmrs.Patient;
+import org.openmrs.Role;
+import org.openmrs.User;
 
 import org.openmrs.Person;
 import org.openmrs.api.EncounterService;
@@ -534,7 +537,7 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 	public void exportPatientReportToPDF(HttpServletRequest request,
 			HttpServletResponse response,
 			Map<ConceptName, List<Object[]>> mappedLabExam, String filename,
-			String title, int patientId) throws DocumentException, IOException {
+			String title, int patientId ) throws DocumentException, IOException {
 
 		Document document = new Document();
 		Patient patient = Context.getPatientService().getPatient(patientId);
@@ -605,6 +608,7 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 		document.add(fontTitle.process("Given name: " + patient.getGivenName()
 				+ "\n"));
 		document.add(fontTitle.process("Age: " + patient.getAge() + "\n"));
+		
 
 		// title row
 		FontSelector fontTitleSelector = new FontSelector();
@@ -712,8 +716,13 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 		}
 
 		cell = new PdfPCell(fontTitleSelector
-				.process("Names, Signature et Stamp of Provider\n"
-						+ Context.getAuthenticatedUser().getPersonName()));
+				.process("Names, Signature et Stamp of Lab Chief\n"
+						//+ Context.getAuthenticatedUser().getPersonName()));
+						+ Context.getUserService().getUser(140).getPersonName()));
+		
+		
+		
+		
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		// ================================================================
@@ -737,6 +746,8 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 		table.addCell(cell);
 		document.add(table);
 		document.close();
+		
+		
 
 		document.close();
 
@@ -1031,6 +1042,7 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 			}
 
 		}
+	
 		return encountersByDate;
 	}
 }
