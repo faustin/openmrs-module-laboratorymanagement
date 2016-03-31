@@ -589,7 +589,7 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 		document.add(fontTitle.process("POLICE NATIONALE\n"));
 		document.add(fontTitle.process("KACYIRU POLICE HOSPITAL\n"));
 		document.add(fontTitle.process("B.P. 6183 KIGALI\n"));
-		document.add(fontTitle.process("Tél : 584897\n"));
+		document.add(fontTitle.process("Tï¿½l : 584897\n"));
 		document.add(fontTitle.process("E-mail : medical@police.gov.rw"));
 		// End Report title
 
@@ -630,6 +630,7 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 		table.setWidthPercentage(100f);
 		BaseColor bckGroundTitle = new BaseColor(170, 170, 170);
 		BaseColor bckGroundTitl = new BaseColor(Color.yellow);
+		         
 
 		// table Header
 		PdfPCell cell = new PdfPCell(fontTitleSelector.process("Exam"));
@@ -664,6 +665,7 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 
 			cell = new PdfPCell(fontTitleSelector.process("" + cptName));
 			cell.setBackgroundColor(bckGroundTitl);
+			
 			table.addCell(cell);
 			cell = new PdfPCell(fontTitleSelector.process(""));
 			table.addCell(cell);

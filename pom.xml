@@ -56,6 +56,7 @@
 
 	<properties>
 		<openMRSVersion>1.11.5</openMRSVersion>
+		<mohappointmentVersion>0.2</mohappointmentVersion>
 	</properties>
 
 	<build>

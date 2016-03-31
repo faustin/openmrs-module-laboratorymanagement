@@ -27,6 +27,17 @@
 			<groupId>org.openmrs.web</groupId>
 			<artifactId>openmrs-web</artifactId>
 			<type>jar</type>
+		</dependency>		
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>mohappointment-omod</artifactId>
+			<version>${mohappointmentVersion}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
 		</dependency>
 	</dependencies>
 

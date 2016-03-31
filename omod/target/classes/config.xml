@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//OpenMRS//DTD OpenMRS Config 1.2//EN" "http://resources.openmrs.org/doctype/config-1.2.dtd">
+
+<module configVersion="1.2">
+	
+	<!-- Base Module Properties -->
+	<id>laboratorymodule</id>
+	<name>Laboratory Module</name>
+	<version>0.1.0.10-SNAPSHOT</version>
+	<package>org.openmrs.module.laboratorymodule</package>
+	<author>MANIRAGENA Faustin</author>
+	<description>
+			Laboratory Module. helpful track the flow of patient lab.
+	</description>
+
+	<activator>org.openmrs.module.laboratorymodule.LaboratoryModuleActivator</activator>
+	
+	<!-- <updateURL>https://dev.openmrs.org/modules/download/laboratorymodule/update.rdf</updateURL>
+-->
+	<!-- /Base Module Properties -->
+	
+	<require_version>1.11.5</require_version>
+	  
+	<require_modules>
+       <require_module version="0.0.8">org.openmrs.module.mohappointment</require_module>
+	</require_modules>
+	
+	<!-- Extensions -->
+	<extension>
+		<point>org.openmrs.tracmodule.list</point>
+		<class>org.openmrs.module.laboratorymodule.extension.html.AdminList</class>
+	</extension>
+	
+	<extension>
+		<point>org.openmrs.patientDashboardTab</point>
+		<class>org.openmrs.module.laboratorymodule.extension.html.LabOrderDashboardTab</class>
+	</extension>	
+	
+	<!-- Advice  	
+	<advice>
+		<point>org.openmrs.api.ObsService</point>
+		<class>org.openmrs.module.laboratorymodule.advice.LaboratoryServiceAdvice</class>
+	</advice>-->
+		
+	<globalProperty>
+		<property>laboratorymodule.labtests.conceptIds</property>
+		<defaultValue>5497,21,856,1553</defaultValue>
+		<description>This should be a list of conceptIds corresponding to lab-tests t</description>
+	</globalProperty>
+	
+	 
+	<globalProperty>
+		<property>laboratorymodule.encounterType.labEncounterTypeId</property>
+		<defaultValue></defaultValue>
+		<description>The encounter type occured between  the Clinician/physician and the Patient.
+		</description>
+	</globalProperty>
+		
+	<globalProperty>
+		<property>laboratorymodule.encounterType.labOrderEncounterTypeId</property>
+		<defaultValue></defaultValue>
+		<description>The encounter type occured between a clinician and Patient 
+		</description>
+	</globalProperty>
+	
+	<globalProperty>
+		<property>laboratorymodule.orderType.labOrderTypeId</property>
+		<defaultValue></defaultValue>
+		<description>The order type used to order lab exams 
+		</description>
+	</globalProperty>
+	
+	<globalProperty>
+		<property>laboratorymodule.multipleAnswerConceptIds</property>
+		<defaultValue>304</defaultValue>
+		<description>List of concept IDs whose concepts can have multiple answers</description>
+	</globalProperty>
+	 
+	<globalProperty>
+		<property>laboratorymodule.labExamCategory</property>
+		<defaultValue>8004,7222,7192,7244,7265,7243</defaultValue>
+		<description>This is the Lab Exam Category</description>
+	</globalProperty>
+	
+	<!-- Required Privileges -->
+	
+	<privilege>
+		<name>view laboratory management</name>
+		<description>the user can manage the Lab orders and results</description>
+	</privilege>
+	<privilege>
+		<name>View Monthly Report</name>
+		<description>The user can view the monthly report</description>
+	</privilege>
+	<privilege>
+		<name>Add Lab Configurations</name>
+		<description>The user can add Laboratory configurations</description>
+	</privilege>
+	<privilege>
+		<name>Patient Dashboard - View Laboratory Order</name>
+		<description>The user can view the Laboratory tab on the Patient dashboard</description>
+	</privilege>
+	
+	
+	<!--
+	<dwr>
+		<allow>
+			<create creator="new" javascript="DWRFormEntryService">
+				<param name="class" value="org.openmrs.module.laboratorymodule.web.DWRFormEntryService"/>
+				<include method="enterForm"/>
+			</create>
+		</allow>
+
+		<signatures>
+			<![CDATA[
+			import org.openmrs.module.laboratorymodule.web.DWRFormEntryService;
+			DWRFormEntryService.enterForm(Integer patientId, Integer formId, boolean useEncounter, List<String> fields);
+			]]>
+		</signatures>	
+	</dwr>
+	-->
+	
+	<!-- Servlets -->
+	<!-- Accessed through the url /pageContext()/moduleServlet/<moduleId>/<servlet-name> 
+	<servlet>
+		<servlet-name>formDownload</servlet-name>
+		<servlet-class>org.openmrs.module.laboratorymodule.web.FormDownloadServlet</servlet-class>
+	</servlet>
+	-->
+	<!-- /Servlets -->
+	
+	
+	<!-- Internationalization -->
+	<!-- All message codes should start with laboratorymodule.* -->
+	<messages>
+		<lang>en</lang>
+		<file>messages.properties</file>
+	</messages>
+	<messages>
+		<lang>fr</lang>
+		<file>messages_fr.properties</file>
+	</messages>
+	<!-- /Internationalization -->
+	
+	
+</module>
+

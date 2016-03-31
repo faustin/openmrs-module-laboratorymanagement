@@ -1,0 +1,13 @@
+@CHARSET "ISO-8859-1";
+
+.searchBox{
+	border: 1px solid #8FABC7;
+	width: 100%;
+}
+.patIdentif{
+	
+	background: #E2E4FF; border: 1px #808080 solid; padding: 0.5em; margin-bottom: 0em
+}
+.title{
+	background: #aabbcc;
+}

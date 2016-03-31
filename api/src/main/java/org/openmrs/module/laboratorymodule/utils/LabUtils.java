@@ -39,7 +39,7 @@ import org.openmrs.module.laboratorymodule.OrderObs;
 import org.openmrs.module.laboratorymodule.PatientLabOrder;
 import org.openmrs.module.laboratorymodule.advice.LaboratoryMgt;
 import org.openmrs.module.laboratorymodule.service.LaboratoryService;
-import org.openmrs.module.mohappointment.model.Appointment;
+import org.openmrs.module.mohappointment.model.MoHAppointment;
 import org.openmrs.module.mohappointment.model.Services;
 import org.openmrs.module.mohappointment.utils.AppointmentUtil;
 import org.openmrs.util.OpenmrsConstants;
@@ -308,14 +308,16 @@ public class LabUtils {
 			String accessionNumber = "access-" + gpCptIdStr + "-" + pcptIdstr+ "-" + chldCptIdStr;
 
 			Order labOrder = new Order();
-			labOrder.setOrderer(Context.getAuthenticatedUser());
+			
+			
+			labOrder.setOrderer(Context.getProviderService().getProvider(Context.getAuthenticatedUser().getId()));
 			labOrder.setPatient(patient);
 			labOrder.setConcept(Context.getConceptService().getConcept(
 					Integer.parseInt(SingleLabConceptIdstr)));
-			labOrder.setStartDate(new Date());
+			labOrder.setDateActivated(new Date());
 			// labOrder.setAccessionNumber(accessionNumber);
 			labOrder.setOrderType(Context.getOrderService().getOrderType(labOrderTypeId));
-			Context.getOrderService().saveOrder(labOrder);
+			Context.getOrderService().saveOrder(labOrder,null);
 
 		}
 
@@ -432,11 +434,11 @@ public class LabUtils {
 		for (Order laborder : labOrders) {
 			laborder.setAccessionNumber(labCode);
 			laborder.setPatient(laborder.getPatient());
-			laborder.setStartDate(laborder.getStartDate());
+			laborder.setDateActivated(laborder.getEffectiveStartDate());
 			laborder.setEncounter(labEncounter);
-			Context.getOrderService().saveOrder(laborder);
+			Context.getOrderService().saveOrder(laborder,null);
 			log.info(">>>>>>>Rulindo >lab order start date>>>"
-					+ laborder.getStartDate() + " and lab code" + labCode);
+					+ laborder.getEffectiveStartDate() + " and lab code" + labCode);
 			// get conceptSet
 			Collection<ConceptSet> childCptSet = laborder.getConcept()
 					.getConceptSets();
@@ -735,7 +737,7 @@ public class LabUtils {
 
 		for (Order order : orders) {
 			if (order.getOrderType().getOrderTypeId() == labOrderTypeId) {
-				dates.add(order.getStartDate());
+				dates.add(order.getEffectiveStartDate());
 			}
 		}
 		Set<Date> dateSet = new HashSet<Date>(dates);
@@ -745,7 +747,7 @@ public class LabUtils {
 
 				for (Order order : orders) {
 					if (order.getOrderType().getOrderTypeId() == labOrderTypeId
-							&& order.getStartDate().equals(date)) {
+							&& order.getEffectiveStartDate().equals(date)) {
 						obsList = new ArrayList<Object[]>();
 						OrderObs orderObs = new OrderObs();
 						for (Obs obs : observations) {
@@ -784,7 +786,7 @@ public class LabUtils {
 
 	}
 
-	public static void setConsultationAppointmentAsAttended(Appointment app) {
+	public static void setConsultationAppointmentAsAttended(MoHAppointment app) {
 		AppointmentUtil.saveAttendedAppointment(app);
 	}
 
@@ -795,7 +797,7 @@ public class LabUtils {
 	 */
 	public static void createWaitingLabAppointment(Patient patient,
 			Encounter encounter) {
-		Appointment waitingAppointment = new Appointment();
+		MoHAppointment waitingAppointment = new MoHAppointment();
 		Services service = AppointmentUtil.getServiceByConcept(Context
 				.getConceptService().getConcept(new Integer(6710)));
 
@@ -840,7 +842,7 @@ public class LabUtils {
 	public static void createWaitingConsAppointment(Patient patient,
 			Encounter encounter) {
 
-		Appointment waitingAppointment = new Appointment();
+		MoHAppointment waitingAppointment = new MoHAppointment();
 		Services service = AppointmentUtil.getServiceByConcept(Context
 				.getConceptService().getConcept(new Integer(8053)));
 
@@ -969,8 +971,8 @@ public static Object[] getIncompleteLabOrder(Concept cpt){
 		// This is where the sorting happens.
 		public int compare(OrderObs ord1, OrderObs ord2) {
 			int compareInt = 0;
-			compareInt = ord1.getOrder().getStartDate().compareTo(
-					ord2.getOrder().getStartDate());
+			compareInt = ord1.getOrder().getEffectiveStartDate().compareTo(
+					ord2.getOrder().getEffectiveStartDate());
 
 			return compareInt;
 		}
@@ -994,7 +996,7 @@ public static Object[] getIncompleteLabOrder(Concept cpt){
 		labOrder.setVoided(true);
 		labOrder.setVoidedBy(Context.getAuthenticatedUser());
 		labOrder.setDateVoided(new Date());
-		Context.getOrderService().saveOrder(labOrder);
+		Context.getOrderService().saveOrder(labOrder,null);
 
 	}
 

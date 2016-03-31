@@ -67,11 +67,11 @@ public class ViewLabOrdersByPatient extends ParameterizableViewController {
 			
 			String labEncounterDateStr=df.format(labEncounterDate);
 			Collection<Order> labOrders = ordService
-					.getOrdersByPatient(Context.getPatientService().getPatient(
-							labEncounter.getPatientId()));
+					.getOrders(Context.getPatientService().getPatient(
+							labEncounter.getPatientId()),null,null,true);
 		
 			for (Order order : labOrders){
-				String orderStrDate=df.format(order.getStartDate());
+				String orderStrDate=df.format(order.getEffectiveStartDate());
 				
 				if (orderStrDate.equals(labEncounterDateStr)) {
 					if (order.getAutoExpireDate()==null) {
@@ -125,10 +125,12 @@ public class ViewLabOrdersByPatient extends ParameterizableViewController {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
 			labOrder.setAutoExpireDate(new Date());
-			labOrder.setDiscontinued(true);
-			labOrder.setDiscontinuedDate(new Date());
-			labOrder.setDiscontinuedBy(Context.getAuthenticatedUser());
-			ordService.updateOrder(labOrder);
+			//to openmrs 1.11.5 where is setDiscontinued(Boolean b) and DiscontinuedBy()?
+			
+			//labOrder.setDiscontinued(true);
+			labOrder.setAutoExpireDate(new Date());
+			//labOrder.setDiscontinuedBy(Context.getAuthenticatedUser());
+			ordService.saveOrder(labOrder,null);
 
 			Date observedOn = sdf.parse(strDate);
 			// labExamWithResult.setOrder(labOrder);
@@ -158,10 +160,10 @@ public class ViewLabOrdersByPatient extends ParameterizableViewController {
 				labExamWithResult = new Obs();
 				
 				labOrder.setAutoExpireDate(new Date());
-				labOrder.setDiscontinued(true);
-				labOrder.setDiscontinuedDate(new Date());
-				labOrder.setDiscontinuedBy(Context.getAuthenticatedUser());
-				ordService.updateOrder(labOrder);
+				//labOrder.setDiscontinued(true);
+				labOrder.setAutoExpireDate(new Date());
+				//labOrder.setDiscontinuedBy(Context.getAuthenticatedUser());
+				ordService.saveOrder(labOrder,null);
 				
 				
 				

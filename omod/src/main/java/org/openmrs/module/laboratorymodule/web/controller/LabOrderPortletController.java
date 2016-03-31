@@ -23,7 +23,7 @@ import org.openmrs.module.laboratorymodule.OrderObs;
 import org.openmrs.module.laboratorymodule.advice.LabTestConstants;
 import org.openmrs.module.laboratorymodule.utils.GlobalPropertiesMgt;
 import org.openmrs.module.laboratorymodule.utils.LabUtils;
-import org.openmrs.module.mohappointment.model.Appointment;
+import org.openmrs.module.mohappointment.model.MoHAppointment;
 
 import org.openmrs.module.mohappointment.utils.AppointmentUtil;
 import org.openmrs.web.controller.PortletController;
@@ -57,7 +57,7 @@ public class LabOrderPortletController extends PortletController {
 		/**
 		 * <<<<<<< Appointment Consultation waiting list management >>>>>>>
 		 */
-		Appointment appointment = null;
+		MoHAppointment appointment = null;
 		// This is from the Provider's Appointment dashboard
 		if (request.getParameter("appointmentId") != null) {
 			appointment = AppointmentUtil.getWaitingAppointmentById(Integer.parseInt(request
@@ -103,7 +103,8 @@ public class LabOrderPortletController extends PortletController {
 		OrderService orderService = Context.getOrderService();
 		// get observations by Person
 
-		List<Order> orders = orderService.getOrdersByPatient(patient);
+		List<Order> orders = orderService.getOrders(patient, null, null, true);			
+				
 		Map<Date, List<OrderObs>> orderObsMap = LabUtils.getMappedOrderToObs(orders, patient);
 		
 		

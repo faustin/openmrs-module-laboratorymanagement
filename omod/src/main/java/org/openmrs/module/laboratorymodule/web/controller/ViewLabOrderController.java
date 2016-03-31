@@ -19,7 +19,7 @@ import org.openmrs.module.laboratorymodule.advice.LaboratoryMgt;
 import org.openmrs.module.laboratorymodule.service.LaboratoryService;
 
 import org.openmrs.module.laboratorymodule.utils.LabUtils;
-import org.openmrs.module.mohappointment.model.Appointment;
+import org.openmrs.module.mohappointment.model.MoHAppointment;
 import org.openmrs.module.mohappointment.model.Services;
 import org.openmrs.module.mohappointment.utils.AppointmentUtil;
 import org.springframework.web.bind.ServletRequestUtils;
@@ -62,10 +62,10 @@ public class ViewLabOrderController extends ParameterizableViewController {
 					 */
 					Services clinicalService = AppointmentUtil.getServiceByConcept(Context
 							.getConceptService().getConcept(6710));
-					List<Appointment> appointments = AppointmentUtil.getAppointmentsByPatientAndDate(
+					List<MoHAppointment> appointments = AppointmentUtil.getAppointmentsByPatientAndDate(
 							Context.getPatientService().getPatient(patientId), clinicalService, new Date());
 					
-					for(Appointment app: appointments){
+					for(MoHAppointment app: appointments){
 						if(app.getAppointmentState().getDescription().equalsIgnoreCase("waiting"))
 							AppointmentUtil.saveAttendedAppointment(app);
 					}
@@ -87,9 +87,9 @@ public class ViewLabOrderController extends ParameterizableViewController {
 
 	            labOrder.setAccessionNumber(labCode);
 	            labOrder.setPatient(labOrder.getPatient());
-	            labOrder.setStartDate(labOrder.getStartDate());
+	            labOrder.setDateActivated(labOrder.getEffectiveStartDate());
 	            labOrder.setEncounter(labEncounter);
-				Context.getOrderService().saveOrder(labOrder);
+				Context.getOrderService().saveOrder(labOrder,null);
 	             
 				
 			}
