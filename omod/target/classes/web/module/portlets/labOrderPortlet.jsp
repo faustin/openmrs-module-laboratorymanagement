@@ -1,20 +1,20 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <openmrs:htmlInclude
-	file="/moduleResources/@MODULE_ID@/scripts/jquery1.js" />
+	file="/moduleResources/laboratorymodule/scripts/jquery1.js" />
 <openmrs:htmlInclude
-	file="/moduleResources/@MODULE_ID@/scripts/demo_page1.css" />
+	file="/moduleResources/laboratorymodule/scripts/demo_page1.css" />
 <openmrs:htmlInclude
-	file="/moduleResources/@MODULE_ID@/scripts/demo_table1.css" />
+	file="/moduleResources/laboratorymodule/scripts/demo_table1.css" />
 <openmrs:htmlInclude
-	file="/moduleResources/@MODULE_ID@/scripts/jquery.dataTables1.js" />
+	file="/moduleResources/laboratorymodule/scripts/jquery.dataTables1.js" />
 <openmrs:htmlInclude
-	file="/moduleResources/@MODULE_ID@/scripts/jquery.simplemodal.js" />
+	file="/moduleResources/laboratorymodule/scripts/jquery.simplemodal.js" />
 <openmrs:htmlInclude
-	file="/moduleResources/@MODULE_ID@/scripts/basic.js" />
+	file="/moduleResources/laboratorymodule/scripts/basic.js" />
 <openmrs:htmlInclude
-	file="/moduleResources/@MODULE_ID@/scripts/basic.css" />
+	file="/moduleResources/laboratorymodule/scripts/basic.css" />
 <openmrs:htmlInclude
-	file="/moduleResources/@MODULE_ID@/scripts/jquery.PrintArea1.js" />
+	file="/moduleResources/laboratorymodule/scripts/jquery.PrintArea1.js" />
 
 <style type="text/css">
 @media print {
